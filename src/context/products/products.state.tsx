@@ -65,6 +65,39 @@ const ProductsState = ({ children }) => {
       };
     }
   };
+
+  const getRelatedProducts = async (category:string): Promise<ServerResponse> => {
+    try {
+
+      setLoading(true);
+      
+      const res: AxiosResponse = await axios.get(`${URLS.product.all}/${category}`);
+      const data: ServerResponse = res.data;
+      console.log("RELATED:",{data})
+
+      if (data.status !== HTTPResponses.Ok && data.status !== HTTPResponses.OkCreated) {
+        message.info(data.msg);
+      }else{        
+        dispatch({
+          type: PRODUCTS_ACTIONS.GET_RELATED_PRODUCTS,
+          payload:{
+            related:data.data
+          },
+        });
+      }
+      setLoading(false);
+      return data;
+
+    } catch (error) {
+      setLoading(false);
+      return {
+        status: HTTPResponses.BadRequest,
+        msg: errorService.genericHandler("getCategories", error),
+      };
+    }
+  };
+
+
   const getStatusesProduct = async (): Promise<ServerResponse> => {
     try {
       setLoading(true);
@@ -264,6 +297,7 @@ const ProductsState = ({ children }) => {
         getStatusesProduct,
         deleteProduct,
         getDashboardProducts,
+        getRelatedProducts,
         create,
         update,
         getPublicationData,

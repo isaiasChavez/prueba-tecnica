@@ -9,6 +9,7 @@ export type ProductsStateType = {
   publicationsUser:Publication[],
   publicationSelected:PublicationSelected,
   publicationsDashboard:Publication[],
+  related:Publication[],
 }
 
 
@@ -18,6 +19,7 @@ export const initialStateProducts =():ProductsStateType=> {
     statuses:[],
     publicationsUser:[],
     publicationsDashboard:[],
+    related:[],
     publicationSelected:{
       category:null,
       coverPage:"",
@@ -52,11 +54,13 @@ interface ProductsContextInterface {
   update(dto: UpdateProductDTO): Promise<ServerResponse>,
   deleteProduct(uuid: string): Promise<ServerResponse>
   getDashboardProducts(): Promise<ServerResponse> ,
+  getRelatedProducts(category:string): Promise<ServerResponse>,
   categories:Category[],
   statuses:StatusProduct[],
   publicationsUser:Publication[],
   publicationsDashboard:Publication[],
-  publicationSelected:PublicationSelected
+  publicationSelected:PublicationSelected,
+  related:Publication[],
 }
 
 const ProductsContext = createContext<ProductsContextInterface | null>(null);

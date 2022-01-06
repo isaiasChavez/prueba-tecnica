@@ -17,12 +17,19 @@ const Publication: React.FC<PublicationProps> = () => {
   let { uuid } = useParams()
   const {
     getPublicationData,
-    publicationSelected
+    publicationSelected,
+    getRelatedProducts
   } = useContext(ProductsContext)
 
   useEffect(() => {
       getPublicationData(uuid)
-  }, [uuid])
+    }, [uuid])
+    
+  useEffect(() => {
+    if (publicationSelected) {
+      getRelatedProducts(publicationSelected.category+"")
+    }
+  }, [publicationSelected])
   console.log(publicationSelected)
   return (
     <>

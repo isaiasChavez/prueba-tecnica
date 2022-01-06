@@ -33,13 +33,15 @@ interface LandingProps {}
 const Landing: React.FC<LandingProps> = () => {
   const onChange = (currentSlide: number) => {};
   const navigate = useNavigate();
-  const {getDashboardProducts,publicationsDashboard} = useContext(ProductsContext)
+  const {getDashboardProducts,publicationsDashboard,getCategories,categories} = useContext(ProductsContext)
+  const todo = "all"
 
   useEffect(() => {
-
+    getCategories()
     getDashboardProducts()
     
   }, [])
+
 
   
   return (
@@ -87,11 +89,9 @@ const Landing: React.FC<LandingProps> = () => {
               direction="horizontal"
               className="w-full flex justify-center  "
             >
-              <Radio.Group defaultValue="a" buttonStyle="solid">
-                <Radio.Button value="a">Hangzhou</Radio.Button>
-                <Radio.Button value="b">Shanghai</Radio.Button>
-                <Radio.Button value="c">Beijing</Radio.Button>
-                <Radio.Button value="d">Chengdu</Radio.Button>
+              <Radio.Group defaultValue="all" buttonStyle="solid">
+                <Radio.Button key="123" value={todo}>TODO</Radio.Button>
+                {categories.map(category => <Radio.Button key={category.id} value={category.id}>{category.name}</Radio.Button>)}
               </Radio.Group>
             </Space>
           </div>
@@ -158,8 +158,12 @@ const CardProduct = ({publication}:{publication:Publication}) => {
     <Card
       cover={
         <img
+          style={{
+            maxHeight:'20rem',
+            height:'20rem',
+          }}
           alt="example"
-          src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+          src={IMG.silla1}
         />
       }
       onClick={() => {

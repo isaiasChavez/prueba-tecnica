@@ -78,7 +78,7 @@ const product = {
   create:publicationRoute.join(null),
   product:publicationRoute.join(null),
   categories:categoryRoute.join(null),
-  all:publicationRoute.join("all"),
+  all:publicationRoute.join("related"),
   statuses:statusesRoute.join(null),
   user:publicationRoute.join('user'),
   onepublication:publicationRoute.join(null),
