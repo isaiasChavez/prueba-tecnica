@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import EditUserModal from "../components/Profile/EditUserModal";
 import { ImageProfile } from "./Profile";
+import {IMG} from '../utils/assets'
 import { CardPublication } from "../components/CardPublication";
 interface PublicationProps {}
 
@@ -43,12 +44,12 @@ const Publication: React.FC<PublicationProps> = () => {
                       <Space direction="vertical">
                         <Image
                           className=""
-                          src="https://marqcopeques.com/pub/media/catalog/product/cache/c5d2edc70ce3e3c8583abbc3eb88456e/e/s/escritorio_-_avila_u_madera_-_160_-_nogal.jpg"
+                          src={IMG.fondo1}
                         />
                         <div className="flex  justify-center">
-                          <Image src="https://marqcopeques.com/pub/media/catalog/product/cache/c5d2edc70ce3e3c8583abbc3eb88456e/e/s/escritorio_-_avila_u_madera_-_120_-_encino_patinado.jpg" />
-                          <Image src="https://marqcopeques.com/pub/media/catalog/product/cache/c5d2edc70ce3e3c8583abbc3eb88456e/e/s/escritorio_-_avila_u_madera_-_120_-_laqueado_galeria.jpg" />
-                          <Image src="https://marqcopeques.com/pub/media/catalog/product/cache/c5d2edc70ce3e3c8583abbc3eb88456e/e/s/escritorio_-_avila_u_madera_-_120_-_laqueado_galeria.jpg" />
+                          <Image src={IMG.fondo2}/>
+                          <Image src={IMG.fondo2} />
+                          <Image src={IMG.fondo2} />
                         </div>
                       </Space>
                     </div>
