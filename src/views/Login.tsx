@@ -1,18 +1,18 @@
-import { Alert, Card, message } from "antd";
-import { Form, Input, Button, Checkbox } from "antd";
-import { Header } from "antd/lib/layout/layout";
-
+import { Alert, Card } from "antd";
+import { Form, Input, Button } from "antd";
 import { useContext, useState } from "react";
-import UserContext from "../../src/context/user/user.context";
+import { useNavigate } from "react-router-dom";
 import HeaderCustom from "../components/Header";
 import SesionContext, { LoginDTO } from "../context/sesion/sesion.context";
+import { ROUTES } from "../Router";
 import { HTTPResponses } from "../types";
 import { IMG } from "../utils/assets";
 
 export interface LoginProps {}
 
 const Login: React.FC<LoginProps> = () => {
-  
+  const navigate = useNavigate();
+
   const { login,loading } = useContext(SesionContext);
   const [errors, seterrors] = useState({
     email:false,
@@ -29,6 +29,8 @@ const Login: React.FC<LoginProps> = () => {
     const {code,message} = await login(DTO)
     seterrorMessage(null)
     if (code===HTTPResponses.Ok) {
+      navigate(ROUTES.profile, { replace: true });
+
       seterrors({
         email:false,
         password:false
@@ -52,7 +54,6 @@ const Login: React.FC<LoginProps> = () => {
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
   };
   return (
     <>

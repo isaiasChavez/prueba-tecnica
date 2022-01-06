@@ -1,18 +1,29 @@
 import { PageHeader, Typography, Space, Col, Breadcrumb, Row } from "antd";
 import { Image } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 import EditUserModal from "../components/Profile/EditUserModal";
 import { ImageProfile } from "./Profile";
 import { CardPublication } from "../components/CardPublication";
+import ProductsContext from "../context/products/products.context";
+import { IMG } from "../utils/assets";
 interface PublicationProps {}
 
 const Publication: React.FC<PublicationProps> = () => {
   const navigate = useNavigate();
 
   const [visible, setVisible] = useState(false);
+  let { uuid } = useParams()
+  const {
+    getPublicationData,
+    publicationSelected
+  } = useContext(ProductsContext)
 
+  useEffect(() => {
+      getPublicationData(uuid)
+  }, [uuid])
+  console.log(publicationSelected)
   return (
     <>
       <EditUserModal visible={visible} setVisible={setVisible} />
@@ -34,21 +45,55 @@ const Publication: React.FC<PublicationProps> = () => {
                     <Breadcrumb.Item href="">
                       <UserOutlined />
                     </Breadcrumb.Item>
-                    <Breadcrumb.Item>Electrónica</Breadcrumb.Item>
+                    <Breadcrumb.Item>{publicationSelected.category}</Breadcrumb.Item>
                   </Breadcrumb>
                 </Col>
                 <Col span={9}>
-                  <Image.PreviewGroup>
+                <Image.PreviewGroup>
                     <div className=" flex flex-col px-4">
                       <Space direction="vertical">
-                        <Image
-                          className=""
-                          src="https://marqcopeques.com/pub/media/catalog/product/cache/c5d2edc70ce3e3c8583abbc3eb88456e/e/s/escritorio_-_avila_u_madera_-_160_-_nogal.jpg"
-                        />
-                        <div className="flex  justify-center">
-                          <Image src="https://marqcopeques.com/pub/media/catalog/product/cache/c5d2edc70ce3e3c8583abbc3eb88456e/e/s/escritorio_-_avila_u_madera_-_120_-_encino_patinado.jpg" />
-                          <Image src="https://marqcopeques.com/pub/media/catalog/product/cache/c5d2edc70ce3e3c8583abbc3eb88456e/e/s/escritorio_-_avila_u_madera_-_120_-_laqueado_galeria.jpg" />
-                          <Image src="https://marqcopeques.com/pub/media/catalog/product/cache/c5d2edc70ce3e3c8583abbc3eb88456e/e/s/escritorio_-_avila_u_madera_-_120_-_laqueado_galeria.jpg" />
+                          <Row
+                            gutter={8}
+                            align="middle"
+                            style={{
+                              height: '25rem',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              background: `url(${IMG.silla1})`,
+                            }}
+                          >
+                            <Image height="100%" src={IMG.silla1} />
+                          </Row>
+                        <div className="flex   justify-center">
+                          <Row
+                            gutter={8}
+                            style={{
+                              minHeight: '9rem',
+                            }}
+                          >
+                            <Col className="gutter-row" span={8}>
+                                <Image
+                                  height="100%"
+                                  className="w-4/12 h-full"
+                                  src={IMG.silla1}
+                                />
+                            </Col>
+                            <Col className="gutter-row" span={8}>
+                                <Image
+                                  className="flex-1"
+                                  height="100%"
+                                  src={IMG.silla2}
+                                />
+                            </Col>
+                            <Col className="gutter-row" span={8}>
+                                <Image
+                                  height="100%"
+                                  className="flex-1"
+                                  src={IMG.silla3}
+                                />
+                            </Col>
+                          </Row>
                         </div>
                       </Space>
                     </div>
@@ -56,18 +101,13 @@ const Publication: React.FC<PublicationProps> = () => {
                 </Col>
                 <Col span={10}>
                   <Space direction="vertical">
-                    <Typography.Text>Usado - Excelente estado</Typography.Text>
+                    <Typography.Text>{publicationSelected.status}</Typography.Text>
                     <Typography.Title level={1}>
-                      Escritorio madera, 3 años{" "}
+                      {publicationSelected.title}
                     </Typography.Title>
-                    <Typography.Title level={4}>$ 1,005 </Typography.Title>
+                    <Typography.Title level={4}>$ {publicationSelected.price} </Typography.Title>
                     <Typography.Paragraph>
-                      Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                      Doloribus laudantium dolorum esse doloremque provident
-                      totam, magnam fuga iure impedit accusantium quisquam optio
-                      quis omnis temporibus, eveniet rem voluptates nemo
-                      similique recusandae excepturi quibusdam corporis
-                      molestias? Voluptas dolorum recusandae at vero.{" "}
+                    {publicationSelected.description}
                     </Typography.Paragraph>
                   </Space>
                 </Col>
@@ -82,7 +122,7 @@ const Publication: React.FC<PublicationProps> = () => {
                   <div>
                     <Space>
                       <Typography.Title level={4}>
-                        <span className="px-4">Isaías Chávez </span>
+                        <span className="px-4">{publicationSelected.user.name} </span>
                       </Typography.Title>
                       <ImageProfile image="https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp" />
                     </Space>

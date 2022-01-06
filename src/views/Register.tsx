@@ -1,9 +1,14 @@
-import { Card, PageHeader } from "antd";
+import { Card, DatePicker, message, PageHeader } from "antd";
 import { Form, Input, Select, Button, Checkbox } from "antd";
 
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import UserContext from "../../src/context/user/user.context";
+import { HTTPResponses } from "../types";
+
 import HeaderCustom from "../components/Header";
+import { CreateUserDTO } from "../context/user/user.dto";
+import { ROUTES } from "../Router";
 import { IMG } from "../utils/assets";
 import { verifyEmail } from "../utils/utils";
 
@@ -11,90 +16,35 @@ export interface RegisterProps {}
 const { Option } = Select;
 
 const Register: React.FC<RegisterProps> = () => {
-  const [registerState, setregisterState] = useState({
-    email: "",
-    password: "",
-    showPassword: false,
-  });
+  const { loading,createUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
-  const { loading } = useContext(UserContext);
 
-  const [errors, setErrors] = useState({
-    email: null,
-    password: null,
-  });
-  const { email, password } = registerState;
+  const male = "male"
+  const female = "female"
 
-  const validateFields = () => {
-    let isValid = true;
-    const newErrors = {
-      email: null,
-      password: null,
-    };
-
-    if (!email || email.trim() === "") {
-      newErrors.email = "Enter a value";
-      isValid = false;
-    }
-    if (!password) {
-      newErrors.password = "Enter a value";
-    }
-    if (!verifyEmail(email.trim())) {
-      newErrors.email = "Enter a valid email";
-      isValid = false;
-    }
-    if (!isValid) {
-      setErrors(newErrors);
-    }
-    return isValid;
-  };
-
-  /*   const onSubmit = async e => {
-    e.preventDefault()
-    if (validateFields()) {
-      let dto = new ReuestSesionDTO(
-        loginState.email.trim().toLowerCase(),
-        loginState.password
-        )
-      }
-    } */
-  /* 
+  const onFinish =async (values: any) => {
+    values.birthday = values.birthday.format('L')
+    values.phonenumber = parseInt(values.phonenumber)
+    values.gender = values.gender === male ? true:false
     
-  const validateResponse = res => {
-    const newErrors = {
-      email: null,
-      password: null
-    }
-    if (res.status === 1) {
-      newErrors.email = 'We cannot find an active account with this email'
-    }
-    if (res.status === 2) {
-      newErrors.password = 'Invalid password'
-    }
-    if (res.status === 3) {
-      message.info('Your subscription has expired')
-    }
-    setErrors(newErrors)
-  }
+    const dto = new CreateUserDTO(values)
 
-  
-   */
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select style={{ width: 70 }}>
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
-      </Select>
-    </Form.Item>
-  );
+    console.log({dto})
+    
+    const response = await createUser(dto)
+    if (response.status===HTTPResponses.Ok||response.status===HTTPResponses.OkCreated) {
+      message.success("Usuario creado correctamente")
+      navigate(ROUTES.login, { replace: true });
+    }
+    
 
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
   };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
+  
   return (
     <>
       <div
@@ -121,27 +71,52 @@ const Register: React.FC<RegisterProps> = () => {
             layout="vertical"
           >
             <Form.Item
-              name={["user", "name"]}
-              label="Name"
-              rules={[{ required: true }]}
+              name="name"
+              label="Nombre"
+              rules={[
+               {
+                 required:true,
+                  message: "Ingrese un nombre"
+               }
+            ]}
             >
               <Input />
             </Form.Item>
             <Form.Item
-              name={["user", "email"]}
+              name="lastname"
+              label="Apellidos"
+              rules={[
+               {
+                 required:true,
+                  message: "Ingrese sus apellidos"
+               }
+            ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="email"
               label="Email"
-              rules={[{ type: "email" }]}
+              rules={[{ 
+                type: "email",
+                message: "Ingrese un email válido",
+               },
+               {
+                 required:true,
+                  message: "Ingrese un email"
+               }
+              ]}
             >
               <Input />
             </Form.Item>
             <Form.Item
               name="nickname"
               label="Nickname"
-              tooltip="What do you want others to call you?"
+              tooltip="¿Cómo quieres que los demás te vean?"
               rules={[
                 {
                   required: true,
-                  message: "Please input your nickname!",
+                  message: "Por favor ingresa un nickname",
                   whitespace: true,
                 },
               ]}
@@ -149,10 +124,27 @@ const Register: React.FC<RegisterProps> = () => {
               <Input />
             </Form.Item>
             <Form.Item
-              name="phone"
-              label="Phone Number"
+              name="birthday"
+              label="Fecha de nacimiento"
               rules={[
-                { required: true, message: "Please input your phone number!" },
+                {
+                  required: true,
+                  message: "Por favor ingresa un nickname",
+                },
+              ]}
+            >
+            <DatePicker showToday={false} />
+            </Form.Item>
+
+            <Form.Item
+              name="phonenumber"
+              label="Número de teléfono"
+              rules={[
+                { required: true, message: "Por favor ingrese su número de teléfono" },
+                {
+                  len:10,
+                  message: "Número de 10 dígitos"
+                }
               ]}
             >
               <Input  style={{ width: "100%" }} />
@@ -160,23 +152,23 @@ const Register: React.FC<RegisterProps> = () => {
 
             <Form.Item
               name="gender"
-              label="Gender"
-              rules={[{ required: true, message: "Please select gender!" }]}
+              label="Género"
+              
+              rules={[{ required: true, message: "Por favor seleccione un género" }]}
             >
-              <Select placeholder="select your gender">
-                <Option value="male">Hombre</Option>
-                <Option value="female">Mujer</Option>
-                <Option value="other">Otro</Option>
+              <Select placeholder="Selecciona">
+                <Option value={male}>Hombre</Option>
+                <Option value={female}>Mujer</Option>
               </Select>
             </Form.Item>
 
             <Form.Item
               name="password"
-              label="Password"
+              label="Contraseña"
               rules={[
                 {
                   required: true,
-                  message: "Please input your password!",
+                  message: "¡Por favor ingresa una contraseña!",
                 },
               ]}
               hasFeedback
@@ -186,13 +178,13 @@ const Register: React.FC<RegisterProps> = () => {
 
             <Form.Item
               name="confirm"
-              label="Confirm Password"
+              label="Confirma tu contraseña"
               dependencies={["password"]}
               hasFeedback
               rules={[
                 {
                   required: true,
-                  message: "Please confirm your password!",
+                  message: "Por favor confirma tu contraseña",
                 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
@@ -201,7 +193,7 @@ const Register: React.FC<RegisterProps> = () => {
                     }
                     return Promise.reject(
                       new Error(
-                        "The two passwords that you entered do not match!"
+                        "¡Las contraseñas no coinciden!"
                       )
                     );
                   },
@@ -212,7 +204,7 @@ const Register: React.FC<RegisterProps> = () => {
             </Form.Item>
 
             <Form.Item wrapperCol={{  span: 24 }}>
-              <Button className="w-full" type="primary" htmlType="submit">
+              <Button loading={loading} className="w-full" type="primary" htmlType="submit">
                 Registrarme
               </Button>
             </Form.Item>

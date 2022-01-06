@@ -5,19 +5,18 @@ import {
   Space,
   Col,
   Row,
-  Layout,
   Divider,
 } from "antd";
 import { EditFilled, LogoutOutlined } from "@ant-design/icons";
-
-import { useParams, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { CardPublication } from "../components/CardPublication";
 import { useContext, useEffect, useState } from "react";
 import EditUserModal from "../components/Profile/EditUserModal";
 import UserContext from "../context/user/user.context";
 import ProductsContext from "../context/products/products.context";
+import SesionContext from "../context/sesion/sesion.context";
+import { ROUTES } from "../Router";
 
-const { Header, Footer, Sider, Content } = Layout;
 interface ProfileProps {}
 
 const Profile: React.FC<ProfileProps> = () => {
@@ -26,6 +25,7 @@ const Profile: React.FC<ProfileProps> = () => {
     useContext(ProductsContext);
   const [visible, setVisible] = useState(false);
   const { user } = useContext(UserContext);
+  const {logout} = useContext(SesionContext);
 
   useEffect(() => {
     getPublicationsUser();
@@ -35,6 +35,10 @@ const Profile: React.FC<ProfileProps> = () => {
     setVisible(true);
   };
 
+  const onLogout=()=>{
+    logout()
+    navigate(ROUTES.root)
+  }
   return (
     <>
       <EditUserModal visible={visible} setVisible={setVisible} />
@@ -88,6 +92,7 @@ const Profile: React.FC<ProfileProps> = () => {
                   icon={<LogoutOutlined />}
                   className='w-full '
                   type='text'
+                  onClick={onLogout}
                 >
                   Cerrar sesion
                 </Button>

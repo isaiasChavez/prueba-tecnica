@@ -68,17 +68,20 @@ const sesion = {
 const user = {
     confirmpass:userRoute.join(null),
     getUserLogged:userRoute.join(null),
+    create:userRoute.join(null),
     logout:userRoute.join('logout'),
     reset:userRoute.join('reset'),
 }
 
 
 const product = {
-  categories:categoryRoute.join(null),
-  statuses:statusesRoute.join(null),
   create:publicationRoute.join(null),
+  product:publicationRoute.join(null),
+  categories:categoryRoute.join(null),
+  all:publicationRoute.join("all"),
+  statuses:statusesRoute.join(null),
   user:publicationRoute.join('user'),
-  onepublication:publicationRoute.join('one'),
+  onepublication:publicationRoute.join(null),
 }
 
 export const URLS =   {

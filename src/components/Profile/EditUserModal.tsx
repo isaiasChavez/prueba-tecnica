@@ -1,7 +1,8 @@
-import { Modal, Button, Typography, Space } from "antd";
-import { useState } from "react";
+import { Modal, Button, Typography, Space, message } from "antd";
+import { useContext, useState } from "react";
 import { ImageProfile } from "../../views/Profile";
 import { Form, Input, Select, Checkbox } from "antd";
+import UserContext from "../../context/user/user.context";
 
 interface EditUserModalProps {
   visible: any;
@@ -14,22 +15,33 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
   visible,
   setVisible,
 }) => {
+
+  const {user} = useContext(UserContext)
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalText, setModalText] = useState("Content of the modal");
 
-  const handleOk = () => {
-    setModalText("The modalllll will be closed after two seconds");
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setVisible(false);
+  const handleOk = async () => {
+    try {
+      
+      setModalText("The modalllll will be closed after two seconds");
+      setConfirmLoading(true);
+      const l = await form.validateFields()
       setConfirmLoading(false);
-    }, 2000);
+      form.submit()
+      console.log(l)
+    } catch (error) {
+      setConfirmLoading(false);
+      console.log({error})      
+    }
   };
+  const [form] = Form.useForm();
 
-  const handleCancel = () => {
-    console.log("Clicked cancel button");
+  const handleCancel =async () => {
+    const l = form.resetFields()
     setVisible(false);
   };
+
+  
 
   return (
     <Modal
@@ -51,7 +63,8 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
         </div>
         <div className="w-9/12  h-full  flex  px-16">
         <Form
-            name="basic"
+        form={form}
+  name="basic"
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
             initialValues={{ remember: true }}
@@ -61,79 +74,68 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
             layout="vertical"
           >
             <Form.Item
-              name={["user", "name"]}
+              validateFirst={true}
+
+              name="name"
               label="Name"
-              rules={[{ required: true }]}
+              rules={[
+                { required: true,
+                message:"Por favor ingrese un valor"
+                },
+                { min: 3, message:"Minimo 3 caracteres"},
+
+              ]}
             >
               <Input />
             </Form.Item>
 
             <Form.Item
               name="instagram"
+              initialValue={user.instagram}
+              
               label="Instagram"
-              rules={[{ required: true }]}
+              rules={[
+                { required: true,
+                message:"Por favor ingrese un valor"
+                },
+                { min: 3, message:"Minimo 3 caracteres"},
+              ]}
             >
               <Input />
             </Form.Item>
             <Form.Item
               name="telegram"
+              initialValue={user.telegram}
               label="Telegram"
-              rules={[{ required: true }]}
+              rules={[
+                { required: true,
+                message:"Por favor ingrese un valor"
+                },
+                { min: 3, message:"Minimo 3 caracteres"},
+              ]}
             >
               <Input />
             </Form.Item>
            
             <Form.Item
-              name="phone"
+              name="phonenumber"
+              initialValue={user.phonenumber}
               label="Phone Number"
               rules={[
-                { required: true, message: "Please input your phone number!" },
+                { required: true,
+                message:"Por favor ingrese un valor"
+                },
+                { min: 3, message:"Minimo 3 caracteres"},
+                {
+                  min:10,
+                  max:10,
+                  pattern:/^[2-9]{2}[0-9]{8}$/,
+        message:"Debe ser un número de 10 dígitos"                  
+                },
+
               ]}
             >
               <Input  style={{ width: "100%" }} />
-            </Form.Item>
-
-          
-
-            <Form.Item
-              name="password"
-              label="Password"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your password!",
-                },
-              ]}
-              hasFeedback
-            >
-              <Input.Password />
-            </Form.Item>
-
-            <Form.Item
-              name="confirm"
-              label="Confirm Password"
-              dependencies={["password"]}
-              hasFeedback
-              rules={[
-                {
-                  required: true,
-                  message: "Please confirm your password!",
-                },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    if (!value || getFieldValue("password") === value) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(
-                      new Error(
-                        "The two passwords that you entered do not match!"
-                      )
-                    );
-                  },
-                }),
-              ]}
-            >
-              <Input.Password />
             </Form.Item>
           </Form>
         </div>

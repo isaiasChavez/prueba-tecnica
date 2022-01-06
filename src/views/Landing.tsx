@@ -11,19 +11,21 @@ import {
   Row,
   Avatar,
 } from "antd";
-import { useParams, useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 import {
   EditOutlined,
   EllipsisOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
 
-import Layout, { Content,Footer } from "antd/lib/layout/layout";
+import Layout, { Footer } from "antd/lib/layout/layout";
 
-import { CSSProperties } from "react";
+import { CSSProperties, useContext, useEffect } from "react";
 import { IMG } from "../utils/assets";
 import Meta from "antd/lib/card/Meta";
+import ProductsContext from "../context/products/products.context";
+import {Publication} from '../context/products/productstypes'
+import { ROUTES } from "../Router";
 
 
 interface LandingProps {}
@@ -31,8 +33,15 @@ interface LandingProps {}
 const Landing: React.FC<LandingProps> = () => {
   const onChange = (currentSlide: number) => {};
   const navigate = useNavigate();
+  const {getDashboardProducts,publicationsDashboard} = useContext(ProductsContext)
 
+  useEffect(() => {
 
+    getDashboardProducts()
+    
+  }, [])
+
+  
   return (
     <>
       <PageHeader
@@ -88,18 +97,13 @@ const Landing: React.FC<LandingProps> = () => {
           </div>
           <div className="min-h-screen w-full py-16 px-8">
             <Row gutter={16}>
-              <Col span={6}>
-                <CardProduct />
-              </Col>
-              <Col span={6}>
-                <CardProduct />
-              </Col>
-              <Col span={6}>
-                <CardProduct />
-              </Col>
-              <Col span={6}>
-                <CardProduct />
-              </Col>
+              {
+                publicationsDashboard.map(publication=><Col key={publication.uuid} span={6}>
+                  <CardProduct publication={publication} />
+                </Col>)
+              }
+              
+             
             </Row>
           </div>
         </Layout>
@@ -147,7 +151,9 @@ const Landing: React.FC<LandingProps> = () => {
   );
 };
 
-const CardProduct = () => {
+const CardProduct = ({publication}:{publication:Publication}) => {
+  const navigate = useNavigate();
+
   return (
     <Card
       cover={
@@ -156,16 +162,14 @@ const CardProduct = () => {
           src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
         />
       }
-      actions={[
-        <SettingOutlined key="setting" />,
-        <EditOutlined key="edit" />,
-        <EllipsisOutlined key="ellipsis" />,
-      ]}
+      onClick={() => {
+        navigate(`${ROUTES.publication}/${publication.uuid}`);
+      }}
     >
       <Meta
         avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-        title="Card title"
-        description="This is the description"
+        title={publication.title}
+        description={publication.description}
       />
     </Card>
   );

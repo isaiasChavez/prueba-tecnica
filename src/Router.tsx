@@ -43,9 +43,11 @@ const Routering: React.FC<RouterProps> = () => {
           <Route path={ROUTES.store} element={<Store />} key={4}/>
 
           <Route path={ROUTES.profile} element={<ProtectedComponent Component={Profile} />} key={5}/>
-          <Route path={ROUTES.newPublication} element={<ProtectedComponent Component={NewPublication} />} key={6}/>
-          <Route path={`${ROUTES.editPublication}/:uuid`} element={<ProtectedComponent Component={NewPublication} />} key={6}/>
-          <Route path={ROUTES.publication} element={<Publication />} key={7}/>
+          <Route path={ROUTES.newPublication} element={<ProtectedComponent Component={NewPublication} />} key={9}/>
+          <Route path={`${ROUTES.editPublication}/:uuid`} element={<ProtectedComponent Component={NewPublication} />} key={23}/>
+
+          <Route path={`${ROUTES.publication}/:uuid`} element={<Publication  />} key={6}/>
+          
         
         </Routes>
       </BrowserRouter>

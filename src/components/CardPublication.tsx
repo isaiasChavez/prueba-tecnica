@@ -11,6 +11,8 @@ import Meta from "antd/lib/card/Meta";
 import { Publication } from "../context/products/productstypes";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../Router";
+import { useContext } from "react";
+import ProductsContext from "../context/products/products.context";
 const { confirm } = Modal;
 interface CardPublicationProps {
   publication: Publication;
@@ -20,14 +22,16 @@ export const CardPublication: React.FC<CardPublicationProps> = ({
   publication,
 }) => {
   const navigate = useNavigate();
+  const {deleteProduct} = useContext(ProductsContext)
 
   const showConfirm = () => {
     confirm({
       icon: <ExclamationCircleOutlined />,
       content: "¿Seguro que quiere eliminar esta publicación?",
       centered: true,
-      onOk() {
+      async onOk() {
         console.log("OK");
+       await deleteProduct(publication.uuid)
       },
       onCancel() {
         console.log("Cancel");
