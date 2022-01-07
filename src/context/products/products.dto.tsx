@@ -1,11 +1,22 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString, IsUppercase, IsUUID } from "class-validator";
 
-export class UpdateProductDTO {
-
-    constructor({category,status}:{category:string,status:string}){
-      this.category = category;
-      this.status = status;
+  type CreateProductDTOType = {category:string,status:string,title:string,description:string,price:number}
+  
+  export class CreateProductDTO  {
+    constructor(data:CreateProductDTOType){
+      this.category = data.category;
+      this.status = data.status;
+      this.description = data.description
+      this.title = data.title
+      this.price = data.price * 1
     }
+  
+    @IsNotEmpty()
+    title: string
+    @IsNotEmpty()
+    description: string
+    @IsNotEmpty()
+    price: number
 
     @IsNotEmpty()
     @IsString()
@@ -14,27 +25,23 @@ export class UpdateProductDTO {
     @IsNotEmpty()
     @IsString()
     status:string
-  
   }
-  
-  
-  export class CreateProductDTO extends UpdateProductDTO {
-  
-    constructor({category,status,title,description,price}:{category:string,status:string,title:string,description:string,price:number}) {
-     super({category,status})
-     this.description = description
-     this.title = title
-     this.price = price
-    }
-    @IsNotEmpty()
-    title: string
-    @IsNotEmpty()
-    description: string
-    @IsNotEmpty()
-    price: number
+
+
+  export class UpdateProductDTO extends CreateProductDTO{
+
+      constructor(data:CreateProductDTOType,uuid:string){
+        super(data)
+        this.uuid=uuid
+      }
+
+      @IsUUID()
+      @IsNotEmpty()
+      uuid:string
+  }
 
   
-  }
+  
   
   
   

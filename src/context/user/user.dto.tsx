@@ -1,8 +1,12 @@
 import {
+  IsBoolean,
+    isDateString,
     IsEmail,
     IsNotEmpty,
+    IsNumber,
     IsOptional,
     IsString,
+    Length,
     MaxLength,
     MinLength,
   } from "class-validator";
@@ -67,16 +71,31 @@ export class ReuestSesionDTO {
   }
   
   export class CreateUserDTO {
-    constructor(name: string, lastname: string, email: string, password: string) {
-      this.name = name;
-      this.lastname = lastname;
-      this.email = email;
-      this.password = password;
+    constructor(data:{name: string,nickname: string,birthday: string,gender: boolean,phonenumber:number, lastname: string, email: string, password: string}) {
+      this.name = data.name;
+      this.lastname = data.lastname;
+      this.email = data.email;
+      this.password = data.password;
+      this.nickname = data.nickname;
+      this.birthday= data.birthday;
+      this.gender=data.gender
+      this.phonenumber= data.phonenumber;
+      
     }
     @IsNotEmpty()
     @IsString()
     @MaxLength(100)
     name: string;
+    @IsNotEmpty()
+    @IsString()
+    @MaxLength(100)
+    nickname: string;
+
+    @IsNotEmpty()
+    @IsString()
+    @MaxLength(100)
+    birthday: any;
+
     @MaxLength(100)
     @IsString()
     @IsNotEmpty()
@@ -90,6 +109,12 @@ export class ReuestSesionDTO {
     @IsNotEmpty()
     @MaxLength(100)
     password: string;
+
+    @IsNotEmpty()
+    @IsBoolean()
+    gender: boolean;
+
+    phonenumber: number;
   }
   
   

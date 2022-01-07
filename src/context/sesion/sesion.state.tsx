@@ -117,35 +117,16 @@ const SesionState = ({ children }) => {
     }
   };
   const logout = async (): Promise<StatusService> => {
-    /*
+    
     try {
-       const logoutDto = new ReuestSesionLogOutDTO()
-      setLoading(true)
-      const { data } = await axios.post(URLS.logout,logoutDto);
       
-      localStorage.removeItem(Config.TOKEN_NAME_INTERN);
-      setLoading(false)
-      if (data.status === 0) {
-      }
-      if (data.status === 2) {
-        sendAlert({
-          type: TypesNotification.error,
-          msg: `Sesion expired`
-        })
-      }
-      router.push("/");
-      dispatch({
-        type: LOG_A.CLOSE_SESION,
-        payload: null,
-      });
-    } catch (error) {
-      sendAlert({
-        type: TypesNotification.error,
-        msg: `An error has occurred ${error.message}`
-      })
+      localStorage.removeItem(config.TOKEN_NAME_INTERN);
+
+      
+    } catch (error) {      
       setLoading(false)
     }
-    */
+    
     return {
       code: HTTPResponses.Ok,
       message: "ok",

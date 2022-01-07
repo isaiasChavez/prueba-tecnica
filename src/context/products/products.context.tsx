@@ -1,13 +1,15 @@
 import { createContext } from "react";
 import { ServerResponse } from "../../types";
-import { CreateProductDTO } from "./products.dto";
-import { Category, StatusProduct,Publication } from "./productstypes";
+import { CreateProductDTO, UpdateProductDTO } from "./products.dto";
+import { Category, StatusProduct,Publication, PublicationSelected } from "./productstypes";
 
 export type ProductsStateType = {
   categories:Category[],
   statuses:StatusProduct[],
   publicationsUser:Publication[],
-  publicationSelected:Publication,
+  publicationSelected:PublicationSelected,
+  publicationsDashboard:Publication[],
+  related:Publication[],
 }
 
 
@@ -16,6 +18,8 @@ export const initialStateProducts =():ProductsStateType=> {
     categories:[],
     statuses:[],
     publicationsUser:[],
+    publicationsDashboard:[],
+    related:[],
     publicationSelected:{
       category:null,
       coverPage:"",
@@ -24,8 +28,19 @@ export const initialStateProducts =():ProductsStateType=> {
       price:0,
       status:null,
       title:"",
-      uuid:""
-    },
+      uuid:"",
+      user:{
+        birthday:"",
+        email:"",
+        gender: false,
+        instagram:"",
+        lastname:"",
+        name:"",
+        phonenumber:"",
+        telegram:"",
+        type:""
+    }
+  }
 };
 return state
 }
@@ -36,10 +51,16 @@ interface ProductsContextInterface {
   create(dto:CreateProductDTO): Promise<ServerResponse>,
   getPublicationsUser(): Promise<ServerResponse>,
   getPublicationData(uuid:string): Promise<ServerResponse>,
+  update(dto: UpdateProductDTO): Promise<ServerResponse>,
+  deleteProduct(uuid: string): Promise<ServerResponse>
+  getDashboardProducts(): Promise<ServerResponse> ,
+  getRelatedProducts(category:string): Promise<ServerResponse>,
   categories:Category[],
   statuses:StatusProduct[],
   publicationsUser:Publication[],
-  publicationSelected:Publication
+  publicationsDashboard:Publication[],
+  publicationSelected:PublicationSelected,
+  related:Publication[],
 }
 
 const ProductsContext = createContext<ProductsContextInterface | null>(null);
