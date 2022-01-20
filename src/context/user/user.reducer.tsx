@@ -21,14 +21,21 @@ import { ActionTypesUser, US_A } from "./usertypes";
   }
 
 const userReducer = (state: UserStateType,action: ActionTypesUser): UserStateType => {
-  const data = action.payload;
+  
 
   switch (action.type) {
     case US_A.GET_USER_PROFILE:
+      const data = action.payload;
       return {
         ...state,
         user:data.user
       }
+    case US_A.UPDATE_SUCCESS:
+      const dataup = action.payload;
+    return {
+      ...state,
+      user:dataup.user
+    }
   
     default:
       return state;

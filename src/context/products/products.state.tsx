@@ -38,20 +38,33 @@ const ProductsState = ({ children }) => {
       };
     }
   };
-  const getDashboardProducts = async (): Promise<ServerResponse> => {
+  const getDashboardProducts = async (category:string): Promise<ServerResponse> => {
     try {
 
       setLoading(true);
-      const res: AxiosResponse = await axios.get(`${URLS.product.all}`);
+      console.log(URLS.product.all);
+      const url = `${URLS.product.all}?category=${category}`
+      console.log({url});
+      const res: AxiosResponse = await axios.get(url);
       const data: ServerResponse = res.data;
+
       console.log({data})
-      dispatch({
-        type: PRODUCTS_ACTIONS.GET_DASHBOARD_PRODUCTS,
-        payload:{
-          publications:data.data
-        },
-      });
-      if (data.status !== HTTPResponses.Ok && data.status !== HTTPResponses.OkCreated) {
+      if (data.status === HTTPResponses.Ok) {
+        dispatch({
+          type: PRODUCTS_ACTIONS.GET_DASHBOARD_PRODUCTS,
+          payload:{
+            publications:data.data
+          },
+        });
+      }
+      if (data.status === HTTPResponses.OkNoContent) {
+        dispatch({
+          type: PRODUCTS_ACTIONS.GET_DASHBOARD_PRODUCTS,
+          payload:{
+            publications:[]
+          },
+        });
+      } else if (data.status !== HTTPResponses.Ok && data.status !== HTTPResponses.OkCreated) {
         message.info(data.msg);
       }
       setLoading(false);
@@ -68,10 +81,11 @@ const ProductsState = ({ children }) => {
 
   const getRelatedProducts = async (category:string): Promise<ServerResponse> => {
     try {
-
+      console.log("TRAYENDO")
       setLoading(true);
-      
-      const res: AxiosResponse = await axios.get(`${URLS.product.all}/${category}`);
+      const url:string = `${URLS.product.related}/${category}`
+      console.log({url})
+      const res: AxiosResponse = await axios.get(url);
       const data: ServerResponse = res.data;
       console.log("RELATED:",{data})
 
@@ -92,7 +106,7 @@ const ProductsState = ({ children }) => {
       setLoading(false);
       return {
         status: HTTPResponses.BadRequest,
-        msg: errorService.genericHandler("getCategories", error),
+        msg: errorService.genericHandler("getRelatedProducts", error),
       };
     }
   };

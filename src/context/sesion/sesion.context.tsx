@@ -30,6 +30,7 @@ export class ReuestSesionLogOutDTO  {
 export type SesionStateType = {
   isLogged: boolean;
   token: string;
+  loadingLogin:boolean;
 };
 
 
@@ -37,6 +38,9 @@ export const initialStateSesion = () => {
   let state: SesionStateType = {
     token:'',
     isLogged: false,
+    loadingLogin:false
+
+    
   };
   return state;
 };
@@ -46,7 +50,8 @@ interface SesionContextInterface {
   login(loginDTO:LoginDTO): Promise<StatusService>;
   verifyToken(token:string): Promise<ServerResponse>;
   isLogged:boolean,
-  loading:boolean
+  loading:boolean,
+  loadingLogin:boolean
 }
 
 const SesionContext = createContext<SesionContextInterface | null>(null);

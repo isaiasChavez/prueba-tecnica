@@ -336,7 +336,9 @@ body{
 .bg-gray{
     background-color: var(--gray)
 }
-
+.text-center{
+    text-align: center;
+}
 .text-white{
     color:white !important;
 }

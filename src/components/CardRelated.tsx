@@ -13,13 +13,12 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../Router";
 import { useContext } from "react";
 import ProductsContext from "../context/products/products.context";
-import { IMG } from "../utils/assets";
 const { confirm } = Modal;
-interface CardPublicationProps {
+interface CardRelatedProps {
   publication: Publication;
 }
 
-export const CardPublication: React.FC<CardPublicationProps> = ({
+export const CardRelated: React.FC<CardRelatedProps> = ({
   publication,
 }) => {
   const navigate = useNavigate();
@@ -42,26 +41,16 @@ export const CardPublication: React.FC<CardPublicationProps> = ({
 
   return (
     <Card
-    hoverable
-    
       cover={
         <img
           alt='example'
-          style={{
-            maxHeight:'18rem'
-          }}
-          src={IMG.fondo2}
+          src='https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'
         />
       }
-      actions={[
-        <EditOutlined
-          key='edit'
-          onClick={() => {
-            navigate(`${ROUTES.editPublication}/${publication.uuid}`);
-          }}
-        />,
-        <DeleteOutlined key='ellipsis' onClick={showConfirm} />,
-      ]}
+      onClick={() => {
+        navigate(`${ROUTES.publication}/${publication.uuid}`)
+      }}
+    hoverable     
     >
       <Meta
         //avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}

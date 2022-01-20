@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { ImageProfile } from "../../views/Profile";
 import { Form, Input, Select, Checkbox } from "antd";
 import UserContext from "../../context/user/user.context";
+import { UpdateUserDTO } from "../../context/user/user.dto";
 
 interface EditUserModalProps {
   visible: any;
@@ -16,19 +17,17 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
   setVisible,
 }) => {
 
-  const {user} = useContext(UserContext)
+  const {user,} = useContext(UserContext)
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalText, setModalText] = useState("Content of the modal");
 
   const handleOk = async () => {
-    try {
-      
-      setModalText("The modalllll will be closed after two seconds");
+    try {      
       setConfirmLoading(true);
       const l = await form.validateFields()
       setConfirmLoading(false);
+
       form.submit()
-      console.log(l)
     } catch (error) {
       setConfirmLoading(false);
       console.log({error})      
@@ -41,8 +40,18 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
     setVisible(false);
   };
 
-  
 
+  const onFinish = async (values)=>{
+    console.log({values})
+    const dto =  new UpdateUserDTO({
+      name:values.name,
+      instagram:values.instagram,
+      phonenumber:values.phonenumber,
+      telegram:values.telegram
+    })
+
+
+  }
   return (
     <Modal
       title={<Typography.Title level={3}>Editar usuario</Typography.Title>}
@@ -65,6 +74,8 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
         <Form
         form={form}
   name="basic"
+  onFinish={onFinish}
+
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
             initialValues={{ remember: true }}
@@ -75,7 +86,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
           >
             <Form.Item
               validateFirst={true}
-
+                initialValue={user.name}
               name="name"
               label="Name"
               rules={[

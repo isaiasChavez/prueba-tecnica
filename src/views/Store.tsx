@@ -8,6 +8,7 @@ import {
   Col,
   Row,
   Avatar,
+  Empty,
 } from 'antd'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Publication } from '../context/products/productstypes'
@@ -30,13 +31,18 @@ const Store: React.FC<StoreProps> = () => {
     getCategories,
     categories,
   } = useContext(ProductsContext)
-  const todo = 'all'
+  const ALL = 'ALL'
 
   useEffect(() => {
     getCategories()
-    getDashboardProducts()
+    getDashboardProducts(ALL)
   }, [])
 
+
+  const onChangeCategory=(e)=> {
+    getDashboardProducts(e.target.value);
+
+  }
   return (
     <>
       <PageHeader
@@ -46,14 +52,11 @@ const Store: React.FC<StoreProps> = () => {
         className="shadow"
         backIcon={null}
         extra={[
-          <Button type="primary" key="3">
-            Tienda
-          </Button>,
           <Button key="2" onClick={() => navigate('/login')}>
-            SignIn
+            Ingresa
           </Button>,
           <Button key="2" onClick={() => navigate('/register')}>
-            SignUp
+            Crea tu cuenta
           </Button>,
         ]}
       ></PageHeader>
@@ -67,12 +70,12 @@ const Store: React.FC<StoreProps> = () => {
                 direction="horizontal"
                 className="w-full flex justify-center  "
               >
-                <Radio.Group defaultValue="all" buttonStyle="solid">
-                  <Radio.Button key="123" value={todo}>
+                <Radio.Group onChange={onChangeCategory} defaultValue={ALL} buttonStyle="solid">
+                  <Radio.Button key="123" value={ALL}>
                     TODO
                   </Radio.Button>
                   {categories.map((category) => (
-                    <Radio.Button key={category.id} value={category.id}>
+                    <Radio.Button key={category.id} value={category.name}>
                       {category.name}
                     </Radio.Button>
                   ))}
@@ -81,13 +84,13 @@ const Store: React.FC<StoreProps> = () => {
             </div>
           </div>
           <div className="min-h-screen w-full py-16 px-8">
-            <Row gutter={16}>
-              {publicationsDashboard.map((publication) => (
+          {publicationsDashboard.length > 0 ? <Row gutter={16}>
+              {publicationsDashboard.map(publication => (
                 <Col key={publication.uuid} span={6}>
                   <CardProduct publication={publication} />
                 </Col>
               ))}
-            </Row>
+            </Row>:<Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>}
           </div>
         </Layout>
       </div>

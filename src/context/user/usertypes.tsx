@@ -46,12 +46,21 @@ export type Childrens = {
 export type GET_USER_PROFILE_PAYLOAD = {
   user:User
 };
+export type UPDATE_SUCCESS_PAYLOAD = {
+  user:User
+};
+
 
 export type GET_USER_PROFILE = {
   type: US_A.GET_USER_PROFILE;
   payload: GET_USER_PROFILE_PAYLOAD;
 };
 
+export type UPDATE_SUCCESS = {
+  type: US_A.UPDATE_SUCCESS;
+  payload: UPDATE_SUCCESS_PAYLOAD;
+};
 
 
-export type ActionTypesUser = GET_USER_PROFILE;
+
+export type ActionTypesUser = GET_USER_PROFILE| UPDATE_SUCCESS;

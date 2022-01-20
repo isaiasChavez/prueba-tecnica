@@ -1,7 +1,7 @@
 
 import { createContext } from "react";
 import  Config  from "../../config";
-import { CreateUserDTO } from "./user.dto";
+import { CreateUserDTO, UpdateUserDTO } from "./user.dto";
 import {  User } from "./usertypes";
 import {ServerResponse } from "../../types";
 
@@ -13,6 +13,7 @@ export type UserStateType = {
 
 interface UserContextInterface {
   createUser(createUserDTO: CreateUserDTO): Promise<ServerResponse>
+  updateUser(dto: UpdateUserDTO): Promise<ServerResponse>
   /* resetPass(resetPassword: PasswordRecovery): any;
   passRecover(passwordRecovery: ResetPassword): any;
   confirmPass(confirmUserPassword: ConfirmUserPassword): any;

@@ -69,6 +69,7 @@ const user = {
     confirmpass:userRoute.join(null),
     getUserLogged:userRoute.join(null),
     create:userRoute.join(null),
+    user:userRoute.join(null),
     logout:userRoute.join('logout'),
     reset:userRoute.join('reset'),
 }
@@ -78,7 +79,8 @@ const product = {
   create:publicationRoute.join(null),
   product:publicationRoute.join(null),
   categories:categoryRoute.join(null),
-  all:publicationRoute.join("related"),
+  all:publicationRoute.join("all"),
+  related:publicationRoute.join("related"),
   statuses:statusesRoute.join(null),
   user:publicationRoute.join('user'),
   onepublication:publicationRoute.join(null),

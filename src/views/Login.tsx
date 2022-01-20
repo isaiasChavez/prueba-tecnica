@@ -1,7 +1,7 @@
-import { Alert, Card } from "antd";
+import { Alert, Card, Space } from "antd";
 import { Form, Input, Button } from "antd";
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import HeaderCustom from "../components/Header";
 import SesionContext, { LoginDTO } from "../context/sesion/sesion.context";
 import { ROUTES } from "../Router";
@@ -13,7 +13,7 @@ export interface LoginProps {}
 const Login: React.FC<LoginProps> = () => {
   const navigate = useNavigate();
 
-  const { login,loading } = useContext(SesionContext);
+  const { login,loadingLogin } = useContext(SesionContext);
   const [errors, seterrors] = useState({
     email:false,
     password:false
@@ -27,6 +27,7 @@ const Login: React.FC<LoginProps> = () => {
       password: values.password.trim(),
     });
     const {code,message} = await login(DTO)
+    console.log({code,message});
     seterrorMessage(null)
     if (code===HTTPResponses.Ok) {
       navigate(ROUTES.profile, { replace: true });
@@ -60,7 +61,10 @@ const Login: React.FC<LoginProps> = () => {
       <HeaderCustom />
       <div
         style={{
-          backgroundImage: `url(${IMG.fondo1})`,
+          backgroundImage: `url(${IMG.fondo4})`,
+          backgroundSize:"cover",
+          backgroundOrigin:'center',
+          backgroundPosition:"center"
         }}
         className=" h-screen w-screen max-h-screen flex  justify-center align-center "
       >
@@ -76,10 +80,20 @@ const Login: React.FC<LoginProps> = () => {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
             layout="vertical"
+            onValuesChange={()=>{
+              seterrors({
+                email:false,
+                password:false
+              })      
+              seterrorMessage(null)
+
+
+
+            }}
           >
             <Form.Item
               wrapperCol={{ span: 24 }}
-              label="email"
+              label="E-mail"
               validateStatus={errors.email? "error" : 'validating'}
               name="email"
               rules={[
@@ -99,7 +113,7 @@ const Login: React.FC<LoginProps> = () => {
 
             <Form.Item
               wrapperCol={{ span: 24 }}
-              label="Password"
+              label="Contraseña"
               validateStatus={errors.email?"error":'validating'}
               name="password"
               rules={[
@@ -108,15 +122,19 @@ const Login: React.FC<LoginProps> = () => {
                   message: "Por favor ingresa un password",
                 },
               ]}
-            >
+              >
               <Input.Password />
             </Form.Item>
-
             <Form.Item wrapperCol={{ offset: 4, span: 18 }}>
-              <Button loading={loading} className="w-full" type="primary" htmlType="submit">
-                Submit
+              <Button loading={loadingLogin} className="w-full" type="primary" htmlType="submit">
+                Ingresar
               </Button>
             </Form.Item>
+
+  <div className=" text-center  w-full">
+
+  ¿No tienes una cuenta? <Link to={ROUTES.register}>Regístrate</Link>
+  </div>
             {errorMessage&&<Alert message={errorMessage} type="error" />}
 
 

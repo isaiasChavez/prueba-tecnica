@@ -24,7 +24,7 @@ const SesionState = ({ children }) => {
   
   const [loading, setLoading] = useState<boolean>(false);
 
-  
+  const [loadingLogin, setloadingLogin] = useState(false);
   const defaultResponse = {
     code: HTTPResponses.BadRequest,
     message: "Ha ocurrido un error",
@@ -33,13 +33,13 @@ const SesionState = ({ children }) => {
   const login = async (loginDTO: LoginDTO): Promise<StatusService> => {
     try {
       let response = defaultResponse;
-      setLoading(true);
+      setloadingLogin(true);
       await errorService.validateClass(loginDTO, "login");
 
 
       const res: AxiosResponse = await axios.post(URLS.sesion.login, loginDTO);
       const data: ServerResponse = res.data;
-
+      console.log({data});
       if (data.status === HTTPResponses.Ok) {
         tokenAuth(data.data.token);
         response = {
@@ -70,11 +70,11 @@ const SesionState = ({ children }) => {
         }
       }
 
-      setLoading(false);
+      setloadingLogin(false);
 
       return response;
     } catch (error) {
-      setLoading(false);
+      setloadingLogin(false);
 
       return {
         code: HTTPResponses.BadRequest,
@@ -138,6 +138,7 @@ const SesionState = ({ children }) => {
       value={{
         ...state,
         loading,
+        loadingLogin,
         verifyToken,
         logout,
         login,

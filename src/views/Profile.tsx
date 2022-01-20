@@ -42,6 +42,7 @@ const Profile: React.FC<ProfileProps> = () => {
   return (
     <>
       <EditUserModal visible={visible} setVisible={setVisible} />
+
       <div className='h-screen w-full  flex flex-col'>
         <PageHeader
           ghost={false}
@@ -59,10 +60,10 @@ const Profile: React.FC<ProfileProps> = () => {
           ]}
         ></PageHeader>
         <div className='flex-1  relative'>
-          <div className=' absolute inset-0  flex'>
+          <div className=' absolute inset-0   flex'>
             {/* Sider */}
-            <div className='w-2/12 h-full  lex flex-col align-center shadow'>
-              <div className=' h-8/12 w-full flex align-center'>
+            <div className='w-2/12      flex-col align-center shadow'>
+              <div className=' h-8/12 w-full  flex align-center'>
                 <Space direction='vertical' align='center'>
                   <ImageProfile image='https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp' />
 
@@ -99,13 +100,13 @@ const Profile: React.FC<ProfileProps> = () => {
               </div>
             </div>
             {/* Sider */}
-            <div className='w-10/12 h-full p-16'>
-              <div className='h-2/12 w-full '>
+            <div className='w-10/12  h-full p-8 overflow-y-auto'>
+              <div className='h-1/12 w-full  '>
                 <Typography.Title level={2}>Tus publicaciones</Typography.Title>
               </div>
-              <Row gutter={16}>
+              <Row gutter={16} >
                 {publicationsUser.map((publication, i: number) => {
-                  if (i % 3 === 0) {
+                  if (i % 4 === 0 && i!==0) {
                     return (
                       < >
                         <Divider key={i} />

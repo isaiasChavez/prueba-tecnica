@@ -121,14 +121,14 @@ export class ReuestSesionDTO {
   export class UpdateUserDTO {
     constructor({
       name,
-      avatar,
-      thumbnail,
-      roomImage
+      phonenumber,
+      instagram,
+      telegram
     }) {
       this.name=name
-      this.avatar=avatar
-      this.thumbnail=thumbnail
-      this.roomImage = roomImage;
+      this.phonenumber = phonenumber
+      this.telegram = telegram
+      this.instagram = instagram
     }
   
     @IsOptional()  
@@ -138,16 +138,20 @@ export class ReuestSesionDTO {
     @IsOptional()  
     @IsString()
     @MaxLength(150)
-    avatar: string;
+    phonenumber: string;
     
     @IsOptional()  
     @IsString()
     @MaxLength(150)
-    thumbnail: string;
-  
+    instagram: string;
+
+
     @IsOptional()  
     @IsString()
-    roomImage: string;
+    @MaxLength(150)
+    telegram: string;
+  
+ 
   
    
   }

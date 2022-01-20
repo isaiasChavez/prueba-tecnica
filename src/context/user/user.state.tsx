@@ -6,7 +6,7 @@ import { HTTPResponses, ServerResponse, URLS } from "../../types";
 import clienteAxios from "../../config/axios";
 import { User, US_A } from "./usertypes";
 import ErrorService from "../../utils/error.helper";
-import { CreateUserDTO } from "./user.dto";
+import { CreateUserDTO, UpdateUserDTO } from "./user.dto";
 import { validateOrReject } from "class-validator";
 import { message } from "antd";
 
@@ -42,6 +42,41 @@ const UserState = ({ children }) => {
     } 
   };
 
+
+  const updateUser = async (dto: UpdateUserDTO): Promise<ServerResponse> => {
+    
+
+    try {
+    await validateOrReject(UpdateUserDTO)
+
+    setLoading(true)
+    const res = await clienteAxios.put(URLS.user.user, dto)
+    const data: ServerResponse = res.data;
+
+    if (data.status !== HTTPResponses.Ok) {
+      message.info(data.msg);
+    }else{
+      dispatch({ type: US_A.UPDATE_SUCCESS, payload: {
+        user:data.data
+      } })
+    }
+
+    console.log({data})
+    setLoading(false)
+    return data
+    
+  } catch (error) {
+    setLoading(false)
+    console.log({error})
+    return {
+      status: HTTPResponses.BadRequest,
+      msg: errorService.genericHandler("createUser", error),
+    };
+  } 
+};
+
+
+
   const getUserProfile = async (): Promise<User> => {
     try {
       setLoading(true);
@@ -72,6 +107,7 @@ const UserState = ({ children }) => {
         loading,
         createUser,
         getUserProfile,
+        updateUser
         
       }}
     >

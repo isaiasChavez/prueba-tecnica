@@ -8,6 +8,8 @@ import { ImageProfile } from "./Profile";
 import { CardPublication } from "../components/CardPublication";
 import ProductsContext from "../context/products/products.context";
 import { IMG } from "../utils/assets";
+import { CardRelated } from "../components/CardRelated";
+import LoadingScreen from "../components/Utils/LoadingScreen";
 interface PublicationProps {}
 
 const Publication: React.FC<PublicationProps> = () => {
@@ -18,17 +20,25 @@ const Publication: React.FC<PublicationProps> = () => {
   const {
     getPublicationData,
     publicationSelected,
+    getRelatedProducts,
+    loading,
+    publicationsRelated
   } = useContext(ProductsContext)
 
   useEffect(() => {
+    window.scrollTo(0,0)
       getPublicationData(uuid)
     }, [uuid])
     
   useEffect(() => {
-    if (publicationSelected) {
+    if (publicationSelected.category) {
+      getRelatedProducts(publicationSelected.category+"")
     }
   }, [publicationSelected])
   console.log(publicationSelected)
+  if (loading) {
+    return <LoadingScreen/>
+  }
   return (
     <>
       <EditUserModal visible={visible} setVisible={setVisible} />
@@ -141,18 +151,10 @@ const Publication: React.FC<PublicationProps> = () => {
                   </Typography.Title>
                   <div>
                     <Row gutter={16}>
-                      {/* <Col span={6}>
-                        <CardPublication />
-                      </Col>
-                      <Col span={6}>
-                        <CardPublication />
-                      </Col>
-                      <Col span={6}>
-                        <CardPublication />
-                      </Col>
-                      <Col span={6}>
-                        <CardPublication />
-                      </Col> */}
+                      { publicationsRelated.map(publication=> <Col span={6}>
+                        <CardRelated publication={publication} />
+                      </Col>) }
+                     
                     </Row>
                   </div>
                 </Space>

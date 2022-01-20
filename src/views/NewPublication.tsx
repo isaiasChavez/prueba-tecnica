@@ -23,6 +23,8 @@ import {
   UpdateProductDTO,
 } from '../context/products/products.dto'
 import LoadingScreen from '../components/Utils/LoadingScreen'
+import { IMG } from '../utils/assets'
+import { ROUTES } from '../Router'
 
 const { Option } = Select
 interface NewPublicationProps {}
@@ -47,6 +49,7 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
   
   const [visible, setVisible] = useState(false)
   const [fileList, setfileList] = useState<UploadFile[]>([])
+  const [loadingData, setloadingData] = useState(true)
   const [fileListPrev, setFileListPrev] = useState<
     { uid: string; url: string }[]
   >([])
@@ -59,17 +62,25 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
     description: '',
   })
   useEffect(() => {
-    if (isEditing) {
-      getPublicationData(uuid)
+    
+    try {
+      
+      setloadingData(true)
+      if (isEditing) {
+        Promise.all([getCategories(),getStatusesProduct(),getPublicationData(uuid)]).then(()=>setloadingData(false)) 
+      }else{
+        Promise.all([getCategories(),getStatusesProduct()]).then(()=>setloadingData(false)) 
+      }
+      
+    } catch (error) {
+      console.log({error})
+      setloadingData(false)  
     }
   }, [uuid])
 
-  useLayoutEffect(() => {
-    getCategories()
-    getStatusesProduct()
-  }, [])
+
   useEffect(() => {
-    console.log("TRAJO",publicationSelected)
+    console.log({loadingData})
     if (isEditing) {
       setfields({
         title:  publicationSelected.title ,
@@ -142,7 +153,7 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
     fileList,
     accept: 'image/png, image/jpg, image/jpeg',
   }
-  if (loading) {
+  if (loadingData) {
       return <LoadingScreen/>
   }
   return (
@@ -154,7 +165,7 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
           title="Bazar UTM"
           className="shadow  "
           onBack={() => {
-            navigate('/profile')
+            navigate(ROUTES.profile)
           }}
         ></PageHeader>
         <div className="flex-1   relative">
@@ -354,7 +365,7 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
                   <Image.PreviewGroup>
                     <div className=" flex flex-col px-4">
                       <Space direction="vertical">
-                        {fileListPrev[0] && (
+                        {/* {fileListPrev[0] && (
                           <Row
                             gutter={8}
                             align="middle"
@@ -368,7 +379,20 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
                           >
                             <Image height="100%" src={fileListPrev[0].url} />
                           </Row>
-                        )}
+                        )} */}
+                          <Row
+                            gutter={8}
+                            align="middle"
+                            style={{
+                              height: '25rem',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              background: `url(${IMG.fondo1})`,
+                            }}
+                          >
+                            <Image height="100%" src={IMG.fondo1} />
+                          </Row>
                         <div className="flex   justify-center">
                           <Row
                             gutter={8}
@@ -376,7 +400,30 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
                               minHeight: '9rem',
                             }}
                           >
+<Col className="gutter-row" span={8}>
+                                <Image
+                                  height="100%"
+                                  className="w-4/12 h-full"
+                                  src={IMG.fondo1}
+                                />
+                            </Col>
                             <Col className="gutter-row" span={8}>
+                              
+                                <Image
+                                  className="flex-1"
+                                  height="100%"
+                                  src={IMG.fondo1}
+                                />
+                              
+                            </Col>
+                            <Col className="gutter-row" span={8}>
+                                <Image
+                                  height="100%"
+                                  className="flex-1"
+                                  src={IMG.fondo1}
+                                />
+                            </Col>
+                            {/* <Col className="gutter-row" span={8}>
                               {fileListPrev[1] && (
                                 <Image
                                   height="100%"
@@ -402,7 +449,7 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
                                   src={fileListPrev[3].url}
                                 />
                               )}
-                            </Col>
+                            </Col> */}
                           </Row>
                         </div>
                       </Space>
