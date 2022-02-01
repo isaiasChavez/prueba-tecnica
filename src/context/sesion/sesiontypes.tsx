@@ -54,7 +54,7 @@ export type LOGIN_ERROR = {
 };
 
 export type CLOSE_SESION = {
-  type: LOG_A.RESET_PASS_SUCCESS;
+  type: LOG_A.CLOSE_SESION;
   payload: CLOSE_SESION_PAYLOAD;
 };
 

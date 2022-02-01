@@ -1,21 +1,20 @@
-import { useContext, useReducer, useState } from "react";
+import {  useReducer, useState } from "react";
 import axios, { tokenAuth } from "../../config/axios";
 import SesionContext, {
   initialStateSesion,
   LoginDTO,
-  ReuestSesionLogOutDTO,
 } from "./sesion.context";
 import {
   URLS,
-  TypesNotification,
   StatusService,
   HTTPResponses,
   ServerResponse,
 } from "../../types/index";
 import SesionReducer from "./sesion.reducer";
+import { message } from "antd";
+
 import ErrorService from "../../utils/error.helper";
 import { AxiosResponse } from "axios";
-import { validateOrReject, ValidationError } from "class-validator";
 import { LOG_A } from "./sesiontypes";
 import config from "../../config";
 
@@ -39,7 +38,6 @@ const SesionState = ({ children }) => {
 
       const res: AxiosResponse = await axios.post(URLS.sesion.login, loginDTO);
       const data: ServerResponse = res.data;
-      console.log({data});
       if (data.status === HTTPResponses.Ok) {
         tokenAuth(data.data.token);
         response = {
@@ -121,8 +119,12 @@ const SesionState = ({ children }) => {
     try {
       
       localStorage.removeItem(config.TOKEN_NAME_INTERN);
+      message.info("Sesión cerrada exitosamente")
+      dispatch({
+        type: LOG_A.CLOSE_SESION,
+        payload:null,
+      });
 
-      
     } catch (error) {      
       setLoading(false)
     }

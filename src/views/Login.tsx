@@ -61,7 +61,7 @@ const Login: React.FC<LoginProps> = () => {
       <HeaderCustom />
       <div
         style={{
-          backgroundImage: `url(${IMG.fondo4})`,
+          backgroundImage: `url(${IMG.alumno1})`,
           backgroundSize:"cover",
           backgroundOrigin:'center',
           backgroundPosition:"center"

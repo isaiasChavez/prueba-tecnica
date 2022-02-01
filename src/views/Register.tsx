@@ -65,11 +65,11 @@ const Register: React.FC<RegisterProps> = () => {
             title='Registro'
           />
         </div>
-        <div className='w-full flex-1  flex  justify-end align-center'>
+        <div className='w-full flex-1  flex overflow-y-auto justify-end align-center'>
           <Card style={{
             border:0,
             borderRadius:0,
-          }} className='w-3/12 shadow-lg h-full '>
+          }} className='w-3/12 shadow-lg h-full overflow-y-auto'>
             <Form
               name='basic'
               labelCol={{ span: 8 }}

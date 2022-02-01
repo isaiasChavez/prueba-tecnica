@@ -6,9 +6,18 @@ import {
   Col,
   Row,
   Divider,
+  List,
 } from "antd";
-import { EditFilled, LogoutOutlined } from "@ant-design/icons";
-import {  useNavigate } from "react-router-dom";
+import {
+  AppstoreOutlined,
+  EditFilled,
+  InstagramOutlined,
+  LogoutOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  PlusSquareOutlined,
+} from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import { CardPublication } from "../components/CardPublication";
 import { useContext, useEffect, useState } from "react";
 import EditUserModal from "../components/Profile/EditUserModal";
@@ -25,7 +34,7 @@ const Profile: React.FC<ProfileProps> = () => {
     useContext(ProductsContext);
   const [visible, setVisible] = useState(false);
   const { user } = useContext(UserContext);
-  const {logout} = useContext(SesionContext);
+  const { logout } = useContext(SesionContext);
 
   useEffect(() => {
     getPublicationsUser();
@@ -35,10 +44,10 @@ const Profile: React.FC<ProfileProps> = () => {
     setVisible(true);
   };
 
-  const onLogout=()=>{
-    logout()
-    navigate(ROUTES.root)
-  }
+  const onLogout = () => {
+    logout();
+    navigate(ROUTES.root);
+  };
   return (
     <>
       <EditUserModal visible={visible} setVisible={setVisible} />
@@ -46,13 +55,29 @@ const Profile: React.FC<ProfileProps> = () => {
       <div className='h-screen w-full  flex flex-col'>
         <PageHeader
           ghost={false}
-          title='Ocupath'
+          title={
+            <span
+              className='cursor-pointer'
+              onClick={() => navigate(ROUTES.root)}
+            >
+              Bazar UTM
+            </span>
+          }
           className='shadow  '
           backIcon={null}
           extra={[
             <Button
-              onClick={() => navigate("/newpublication")}
+              onClick={() => navigate(ROUTES.store)}
+              type='default'
+              icon={<AppstoreOutlined />}
+              key='3'
+            >
+              Tienda
+            </Button>,
+            <Button
+              onClick={() => navigate(ROUTES.newPublication)}
               type='primary'
+              icon={<PlusSquareOutlined />}
               key='3'
             >
               Nueva Publicación
@@ -64,23 +89,60 @@ const Profile: React.FC<ProfileProps> = () => {
             {/* Sider */}
             <div className='w-2/12      flex-col align-center shadow'>
               <div className=' h-8/12 w-full  flex align-center'>
-                <Space direction='vertical' align='center'>
+                <Space direction='vertical' className=" w-full" align='center'>
                   <ImageProfile image='https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp' />
 
-                  <div className='px-8'>
-                    <Space direction='vertical'>
-                      <Typography.Title level={2}>
+                  <div className=' w-full px-8 '>
+                    <Space direction='vertical' className=" ">
+                      <Typography.Title level={3}>
                         {user.name} {user.lastname}
                       </Typography.Title>
-                      <Typography.Text>{user.email}</Typography.Text>
-                      <Typography.Text>@instagram</Typography.Text>
-                      <Typography.Text>@telegram</Typography.Text>
-                      <Typography.Text>{user.phonenumber}</Typography.Text>
+
+                      <List
+                        itemLayout='horizontal'
+                        dataSource={[
+                          {
+                            name: <Space>
+                            <MailOutlined />
+                            {user.email}
+                          </Space>,
+                          },
+                          {
+                            name: <Space>
+                            <PhoneOutlined />
+                            {user.phonenumber}
+                          </Space> ,
+                          },
+                          {
+                            name: user.instagram ? (
+                              user.instagram
+                            ) : (
+                              <Button onClick={showModal} icon={ <InstagramOutlined />} type='link'>
+                                Agrega tu instagram
+                              </Button>
+                            ),
+                          },
+                          {
+                            name: user.telegram ? (
+                              user.telegram
+                            ) : (
+                              <Button onClick={showModal} icon={<EditFilled />} type='link'>
+                                Agrega tu telegram
+                              </Button>
+                            ),
+                          },
+                        ]}
+                        renderItem={item => (
+                          <List.Item>
+                            <List.Item.Meta title={item.name} />
+                          </List.Item>
+                        )}
+                      />
                       <Button
                         onClick={showModal}
                         icon={<EditFilled />}
                         className='w-full '
-                        type='text'
+                        type='primary'
                       >
                         Editar perfil
                       </Button>
@@ -104,21 +166,21 @@ const Profile: React.FC<ProfileProps> = () => {
               <div className='h-1/12 w-full  '>
                 <Typography.Title level={2}>Tus publicaciones</Typography.Title>
               </div>
-              <Row gutter={16} >
+              <Row gutter={16}>
                 {publicationsUser.map((publication, i: number) => {
-                  if (i % 4 === 0 && i!==0) {
+                  if (i % 4 === 0 && i !== 0) {
                     return (
-                      < >
+                      <>
                         <Divider key={i} />
                         <Col span={6}>
-                          <CardPublication  publication={publication} />
+                          <CardPublication publication={publication} />
                         </Col>
                       </>
                     );
                   }
                   return (
                     <Col key={i} span={6}>
-                      <CardPublication  publication={publication}/>
+                      <CardPublication publication={publication} />
                     </Col>
                   );
                 })}

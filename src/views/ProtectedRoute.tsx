@@ -14,7 +14,7 @@ const ProtectedComponent = ({ Component: Component, ...props }) => {
     let location = useLocation();
 
 
-    const freeRoutes = [ROUTES.root,ROUTES.login, ROUTES.register];
+    const freeRoutes = [ROUTES.root,ROUTES.login, ROUTES.register,ROUTES.root];
 
     const { verifyToken,isLogged,loading } = useContext(SesionContext);
     const {getUserProfile,loading:loadingUser} = useContext(UserContext)
@@ -32,8 +32,8 @@ const ProtectedComponent = ({ Component: Component, ...props }) => {
       } else {
         
         // we call the api that verifies the token.
-        const routesAdmin = [ROUTES.profile];
-        const routesGuest = [ROUTES.profile];
+        const routesAdmin = [ROUTES.profile,ROUTES.root,ROUTES.store];
+        const routesGuest = [ROUTES.profile,ROUTES.root,ROUTES.store];
 
         verifyToken(accessToken).then( async(data) => {
           const dataUser = data.data;

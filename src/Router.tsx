@@ -18,6 +18,7 @@ export const ROUTES ={
   root:'/',
   login:'/login',
   profile:'/profile',
+  about:'/about',
   register:'/register',
   newPublication:'/newpublication',
   editPublication:'/edit',

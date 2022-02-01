@@ -50,11 +50,12 @@ const UserState = ({ children }) => {
     await validateOrReject(UpdateUserDTO)
 
     setLoading(true)
-    const res = await clienteAxios.put(URLS.user.user, dto)
+    const res = await clienteAxios.put(`${URLS.user.user}${state.user.email}`, dto)
     const data: ServerResponse = res.data;
 
     if (data.status !== HTTPResponses.Ok) {
       message.info(data.msg);
+      console.log({data});
     }else{
       dispatch({ type: US_A.UPDATE_SUCCESS, payload: {
         user:data.data
@@ -70,7 +71,7 @@ const UserState = ({ children }) => {
     console.log({error})
     return {
       status: HTTPResponses.BadRequest,
-      msg: errorService.genericHandler("createUser", error),
+      msg: errorService.genericHandler("updateUser", error),
     };
   } 
 };

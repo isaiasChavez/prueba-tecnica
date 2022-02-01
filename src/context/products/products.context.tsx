@@ -55,7 +55,7 @@ interface ProductsContextInterface {
   getPublicationData(uuid:string): Promise<ServerResponse>,
   update(dto: UpdateProductDTO): Promise<ServerResponse>,
   deleteProduct(uuid: string): Promise<ServerResponse>
-  getDashboardProducts(category:string): Promise<ServerResponse> ,
+  getDashboardProducts(category:string,query:string): Promise<ServerResponse> ,
   getRelatedProducts(category:string): Promise<ServerResponse>,
   categories:Category[],
   statuses:StatusProduct[],

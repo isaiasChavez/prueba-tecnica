@@ -10,6 +10,7 @@ import ProductsContext from "../context/products/products.context";
 import { IMG } from "../utils/assets";
 import { CardRelated } from "../components/CardRelated";
 import LoadingScreen from "../components/Utils/LoadingScreen";
+import FooterGeneral from "../components/Footer";
 interface PublicationProps {}
 
 const Publication: React.FC<PublicationProps> = () => {
@@ -39,6 +40,7 @@ const Publication: React.FC<PublicationProps> = () => {
   if (loading) {
     return <LoadingScreen/>
   }
+  console.log("publicationSelected.user: =><<",publicationSelected.user);
   return (
     <>
       <EditUserModal visible={visible} setVisible={setVisible} />
@@ -53,8 +55,13 @@ const Publication: React.FC<PublicationProps> = () => {
         ></PageHeader>
         <div className="flex-1  relative">
           <div className=" absolute inset-0  flex flex-col">
-            <div className="w-full h-full p-16">
-              <Row gutter={100} className="w-full h-full">
+            <div className="w-full h-full px-8" style={{
+              minHeight:'45rem',
+              marginTop:'3rem'
+            }}>
+              <Row gutter={100}  style={{
+              minHeight:'45rem'
+            }}className="w-full  h-full">
                 <Col span={3} className="">
                   <Breadcrumb>
                     <Breadcrumb.Item href="">
@@ -65,7 +72,7 @@ const Publication: React.FC<PublicationProps> = () => {
                 </Col>
                 <Col span={9}>
                 <Image.PreviewGroup>
-                    <div className=" flex flex-col px-4">
+                    <div className=" flex flex-col p-16">
                       <Space direction="vertical">
                           <Row
                             gutter={8}
@@ -129,20 +136,30 @@ const Publication: React.FC<PublicationProps> = () => {
               </Row>
             </div>
             <div className="h-screen w-full ">
-              <div className="w-10/12 mx-auto shadow  flex flex-col align-end bg-gray p-8">
-                <Space direction="vertical">
-                  <Typography.Title level={3}>
+              <div className="w-10/12 mx-auto shadow  flex    p-8">
+                <div className="h-full " style={{
+                  width:"20rem"
+                }}>
+
+              <Typography.Title level={3}>
                     Información del vendedor
                   </Typography.Title>
-                  <div>
+                <Typography.Paragraph>
+                {publicationSelected.user.name}
+                </Typography.Paragraph>
+
+                <Typography.Paragraph copyable>
+                {publicationSelected.user.phonenumber}
+                </Typography.Paragraph>
+                </div>
+                <div className=" flex-1 flex justify-end">
                     <Space>
-                      <Typography.Title level={4}>
-                        <span className="px-4">{publicationSelected.user.name} </span>
-                      </Typography.Title>
+                      <Typography.Paragraph >
+                        <span className="px-4">  </span>
+                      </Typography.Paragraph>
                       <ImageProfile image="https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp" />
                     </Space>
-                  </div>
-                </Space>
+                </div>
               </div>
               <div className="w-10/12 mx-auto my-8   flex flex-col   py-8">
                 <Space direction="vertical">
@@ -162,7 +179,9 @@ const Publication: React.FC<PublicationProps> = () => {
             </div>
           </div>
         </div>
+        
       </div>
+      
     </>
   );
 };

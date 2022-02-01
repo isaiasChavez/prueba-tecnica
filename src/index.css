@@ -325,7 +325,9 @@ body{
 .bg-red{
     background-color: red;
 }
-
+.cursor-pointer{
+    cursor: pointer;
+}
 .bg-blue{
     background-color: blue;
 }
@@ -338,6 +340,9 @@ body{
 }
 .text-center{
     text-align: center;
+}
+.text-uppercase{
+    text-transform: uppercase;
 }
 .text-white{
     color:white !important;

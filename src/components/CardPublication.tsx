@@ -23,7 +23,7 @@ export const CardPublication: React.FC<CardPublicationProps> = ({
   publication,
 }) => {
   const navigate = useNavigate();
-  const {deleteProduct} = useContext(ProductsContext)
+  const {deleteProduct,loading} = useContext(ProductsContext)
 
   const showConfirm = () => {
     confirm({
@@ -43,9 +43,11 @@ export const CardPublication: React.FC<CardPublicationProps> = ({
   return (
     <Card
     hoverable
-    
       cover={
         <img
+        onClick={()=>{
+          navigate(`${ROUTES.publication}/${publication.uuid}`);
+        }}
           alt='example'
           style={{
             maxHeight:'18rem'

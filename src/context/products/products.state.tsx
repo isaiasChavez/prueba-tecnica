@@ -38,12 +38,12 @@ const ProductsState = ({ children }) => {
       };
     }
   };
-  const getDashboardProducts = async (category:string): Promise<ServerResponse> => {
+  const getDashboardProducts = async (category:string,query:string): Promise<ServerResponse> => {
     try {
 
       setLoading(true);
       console.log(URLS.product.all);
-      const url = `${URLS.product.all}?category=${category}`
+      const url = `${URLS.product.all}?category=${category}&query=${query}`
       console.log({url});
       const res: AxiosResponse = await axios.get(url);
       const data: ServerResponse = res.data;
