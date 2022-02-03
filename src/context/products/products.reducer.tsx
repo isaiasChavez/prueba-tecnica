@@ -55,6 +55,12 @@ const productsReducer = (
         ...state,
         publicationsRelated: datarelated.related,
       };
+    case PRODUCTS_ACTIONS.CLEAR:
+        return {
+          ...state,
+          publicationsUser:[],
+          publicationsRelated:[],
+        }
     case PRODUCTS_ACTIONS.UPDATE_PRODUCT:
       let data4 = action.payload;
       return {

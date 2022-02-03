@@ -8,6 +8,7 @@ import silla3 from '../images/silla3.jpg'
 import fondo4 from '../images/fondo4.jpg'
 import alumno1 from '../images/alumno1.jpg'
 import alumno2 from '../images/alumno2.jpg'
+import alumno3 from '../images/alumnos3.jpg'
 import fondo5 from '../images/fondo5.jpg'
 
 export const IMG = {
@@ -21,5 +22,6 @@ export const IMG = {
     fondo5,
     alumno1,
     alumno2,
+    alumno3,
     imagenplaceholder
 }

@@ -33,6 +33,7 @@ export const initialStateProducts =():ProductsStateType=> {
       uuid:"",
       user:{
         birthday:"",
+        avatar:"",
         email:"",
         gender: false,
         instagram:"",
@@ -57,6 +58,7 @@ interface ProductsContextInterface {
   deleteProduct(uuid: string): Promise<ServerResponse>
   getDashboardProducts(category:string,query:string): Promise<ServerResponse> ,
   getRelatedProducts(category:string): Promise<ServerResponse>,
+  clearPublications():void,
   categories:Category[],
   statuses:StatusProduct[],
   publicationsUser:Publication[],

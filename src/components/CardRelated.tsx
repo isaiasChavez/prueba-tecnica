@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../Router";
 import { useContext } from "react";
 import ProductsContext from "../context/products/products.context";
+import { IMG } from "../utils/assets";
 const { confirm } = Modal;
 interface CardRelatedProps {
   publication: Publication;
@@ -44,7 +45,7 @@ export const CardRelated: React.FC<CardRelatedProps> = ({
       cover={
         <img
           alt='example'
-          src='https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'
+          src={IMG.alumno2}
         />
       }
       onClick={() => {

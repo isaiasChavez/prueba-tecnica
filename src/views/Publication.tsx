@@ -1,6 +1,6 @@
 import { PageHeader, Typography, Space, Col, Breadcrumb, Row } from "antd";
 import { Image } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { InstagramOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import EditUserModal from "../components/Profile/EditUserModal";
@@ -151,17 +151,25 @@ const Publication: React.FC<PublicationProps> = () => {
                 <Typography.Paragraph copyable>
                 {publicationSelected.user.phonenumber}
                 </Typography.Paragraph>
+                {publicationSelected.user.telegram?<Typography.Paragraph copyable>
+                Telegram: {publicationSelected.user.telegram}
+                </Typography.Paragraph>:null}
+                <Space >
+                {publicationSelected.user.instagram?<Typography.Paragraph copyable >
+                Instagram: {publicationSelected.user.instagram}
+                </Typography.Paragraph>:null}
+                </Space>
                 </div>
                 <div className=" flex-1 flex justify-end">
                     <Space>
                       <Typography.Paragraph >
                         <span className="px-4">  </span>
                       </Typography.Paragraph>
-                      <ImageProfile image="https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp" />
+                      <ImageProfile image={publicationSelected.user.avatar} />
                     </Space>
                 </div>
               </div>
-              <div className="w-10/12 mx-auto my-8   flex flex-col   py-8">
+              {publicationsRelated.length!==0?<div className="w-10/12 mx-auto my-8   flex flex-col   py-8">
                 <Space direction="vertical">
                   <Typography.Title level={3}>
                     Productos relacionados
@@ -175,7 +183,7 @@ const Publication: React.FC<PublicationProps> = () => {
                     </Row>
                   </div>
                 </Space>
-              </div>
+              </div>:null}
             </div>
           </div>
         </div>

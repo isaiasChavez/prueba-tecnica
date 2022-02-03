@@ -96,6 +96,7 @@ const Login: React.FC<LoginProps> = () => {
               label="E-mail"
               validateStatus={errors.email? "error" : 'validating'}
               name="email"
+              
               rules={[
                 {
                   required: true,
@@ -108,7 +109,7 @@ const Login: React.FC<LoginProps> = () => {
                 },
               ]}
             >
-              <Input />
+              <Input autoFocus />
             </Form.Item>
 
             <Form.Item

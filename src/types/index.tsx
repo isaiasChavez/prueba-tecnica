@@ -52,10 +52,12 @@ class Route  {
 
 
 const sesionRoute = new Route('auth')
+const assetsRoute = new Route('asset')
 const userRoute = new Route('user')
 const statusesRoute = new Route('statusproduct')
 const categoryRoute = new Route('category')
 const publicationRoute = new Route('publication')
+const configurationRoute = new Route('config')
 
 
 const sesion = {
@@ -74,6 +76,14 @@ const user = {
     reset:userRoute.join('reset'),
 }
 
+const configuration= {
+  configuration:configurationRoute.join(null)
+}
+const asset = {
+  asset:assetsRoute.join(null),
+  profile:assetsRoute.join('profile'),
+}
+
 
 const product = {
   create:publicationRoute.join(null),
@@ -89,7 +99,9 @@ const product = {
 export const URLS =   {
     sesion,
     user,
-    product
+    product,
+    configuration,
+    asset
 };
 
 

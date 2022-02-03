@@ -51,7 +51,8 @@ interface SesionContextInterface {
   verifyToken(token:string): Promise<ServerResponse>;
   isLogged:boolean,
   loading:boolean,
-  loadingLogin:boolean
+  loadingLogin:boolean,
+  token:string
 }
 
 const SesionContext = createContext<SesionContextInterface | null>(null);

@@ -20,11 +20,12 @@ const ProtectedComponent = ({ Component: Component, ...props }) => {
     const {getUserProfile,loading:loadingUser} = useContext(UserContext)
 
     const isAFreeRoute = freeRoutes.includes(location.pathname);
-
     useEffect(() => {
 
       const accessToken = localStorage.getItem(Config.TOKEN_NAME_INTERN);
+      
       // if no accessToken was found,then we redirect to "/" page.
+      console.log({accessToken});
       if (!accessToken) {
         if (!isAFreeRoute) {
           navigate(ROUTES.root);
@@ -44,7 +45,7 @@ const ProtectedComponent = ({ Component: Component, ...props }) => {
             let isAdmin = userType === ROLES_TYPES.ADMIN;
             let isUser = userType === ROLES_TYPES.USER;
 
-            await getUserProfile()
+            await getUserProfile(false)
 
             if (isAdmin) {
               if (!routesAdmin.includes(location.pathname)) {

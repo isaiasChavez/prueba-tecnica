@@ -202,8 +202,8 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
                         message: "Por favor ingresa un título",
                       },
                       {
-                        min: 8,
-                        message: "Se necesita un mínimo de 8 caracteres",
+                        min: 5,
+                        message: "Se necesita un mínimo de 5 caracteres",
                       },
                       {
                         max: 50,

@@ -156,3 +156,23 @@ export class ReuestSesionDTO {
    
   }
   
+
+  export class UpdateConfigurationUser{
+
+    constructor ({instagram,telegram}) {
+      
+      this.instagram = instagram
+      this.telegram=telegram
+    }
+
+    @IsBoolean()
+    @IsNotEmpty()
+    instagram:boolean;
+
+    @IsBoolean()
+    @IsNotEmpty()
+    telegram:boolean;
+
+  
+  }
+  

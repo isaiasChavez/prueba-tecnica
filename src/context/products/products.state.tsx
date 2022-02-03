@@ -81,16 +81,14 @@ const ProductsState = ({ children }) => {
 
   const getRelatedProducts = async (category:string): Promise<ServerResponse> => {
     try {
-      console.log("TRAYENDO")
+      
       setLoading(true);
-      const url:string = `${URLS.product.related}/${category}`
+      const url:string = `${URLS.product.related}/${category}?p=${state.publicationSelected.uuid}`
       console.log({url})
       const res: AxiosResponse = await axios.get(url);
       const data: ServerResponse = res.data;
-      console.log("RELATED:",{data})
 
       if (data.status !== HTTPResponses.Ok && data.status !== HTTPResponses.OkCreated) {
-        message.info(data.msg);
       }else{        
         dispatch({
           type: PRODUCTS_ACTIONS.GET_RELATED_PRODUCTS,
@@ -300,6 +298,13 @@ const ProductsState = ({ children }) => {
       };
     }
   };
+  
+  const clearPublications = ():void => {
+        dispatch({
+          type: PRODUCTS_ACTIONS.CLEAR,
+          payload: {},
+        });
+  };
 
   return (
     <ProductsContext.Provider
@@ -315,6 +320,7 @@ const ProductsState = ({ children }) => {
         create,
         update,
         getPublicationData,
+        clearPublications
       }}
     >
       {children}

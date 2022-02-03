@@ -5,7 +5,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../src/context/user/user.context";
 import { HTTPResponses } from "../types";
-
+import moment from 'moment';
 import HeaderCustom from "../components/Header";
 import { CreateUserDTO } from "../context/user/user.dto";
 import { ROUTES } from "../Router";
@@ -21,7 +21,7 @@ const Register: React.FC<RegisterProps> = () => {
 
   const male = "male";
   const female = "female";
-
+  const dateFormat = 'YYYY/MM/DD';
   const onFinish = async (values: any) => {
     values.birthday = values.birthday.format("L");
     values.phonenumber = parseInt(values.phonenumber);
@@ -49,7 +49,7 @@ const Register: React.FC<RegisterProps> = () => {
     <>
       <div
         style={{
-          backgroundImage: `url(${IMG.fondo2})`,
+          backgroundImage: `url(${IMG.alumno3})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
 
@@ -91,7 +91,7 @@ const Register: React.FC<RegisterProps> = () => {
                   },
                 ]}
               >
-                <Input />
+                <Input autoFocus/>
               </Form.Item>
               <Form.Item
                 wrapperCol={{ span: 24 }}
@@ -149,7 +149,7 @@ const Register: React.FC<RegisterProps> = () => {
                   },
                 ]}
               >
-                <DatePicker className='w-full' showToday={false} />
+                <DatePicker className='w-full' defaultValue={moment('2000/01/01', dateFormat)} showToday={false} />
               </Form.Item>
 
               <Form.Item

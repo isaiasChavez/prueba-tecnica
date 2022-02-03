@@ -7,17 +7,19 @@ import {
   Row,
   Divider,
   List,
+  Empty,
 } from "antd";
 import {
   AppstoreOutlined,
   EditFilled,
+  InboxOutlined,
   InstagramOutlined,
   LogoutOutlined,
   MailOutlined,
   PhoneOutlined,
   PlusSquareOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CardPublication } from "../components/CardPublication";
 import { useContext, useEffect, useState } from "react";
 import EditUserModal from "../components/Profile/EditUserModal";
@@ -30,14 +32,15 @@ interface ProfileProps {}
 
 const Profile: React.FC<ProfileProps> = () => {
   const navigate = useNavigate();
-  const { getPublicationsUser, loading, publicationsUser } =
+  const { getPublicationsUser, loading, publicationsUser,clearPublications } =
     useContext(ProductsContext);
   const [visible, setVisible] = useState(false);
-  const { user } = useContext(UserContext);
+  const { user, getUserProfile,clear } = useContext(UserContext);
   const { logout } = useContext(SesionContext);
 
   useEffect(() => {
     getPublicationsUser();
+    getUserProfile(true);
   }, []);
 
   const showModal = () => {
@@ -46,6 +49,9 @@ const Profile: React.FC<ProfileProps> = () => {
 
   const onLogout = () => {
     logout();
+    clear()
+    clearPublications()
+
     navigate(ROUTES.root);
   };
   return (
@@ -89,11 +95,14 @@ const Profile: React.FC<ProfileProps> = () => {
             {/* Sider */}
             <div className='w-2/12      flex-col align-center shadow'>
               <div className=' h-8/12 w-full  flex align-center'>
-                <Space direction='vertical' className=" w-full" align='center'>
-                  <ImageProfile image='https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp' />
+                <Space direction='vertical' className=' w-full' align='center'>
+                  <div onClick={showModal} className="cursor-pointer">
+
+                  <ImageProfile  image={user.avatar} />
+                  </div>
 
                   <div className=' w-full px-8 '>
-                    <Space direction='vertical' className=" ">
+                    <Space direction='vertical' className=' '>
                       <Typography.Title level={3}>
                         {user.name} {user.lastname}
                       </Typography.Title>
@@ -102,31 +111,49 @@ const Profile: React.FC<ProfileProps> = () => {
                         itemLayout='horizontal'
                         dataSource={[
                           {
-                            name: <Space>
-                            <MailOutlined />
-                            {user.email}
-                          </Space>,
+                            name: (
+                              <Space>
+                                <MailOutlined />
+                                {user.email}
+                              </Space>
+                            ),
                           },
                           {
-                            name: <Space>
-                            <PhoneOutlined />
-                            {user.phonenumber}
-                          </Space> ,
+                            name: (
+                              <Space>
+                                <PhoneOutlined />
+                                {user.phonenumber}
+                              </Space>
+                            ),
                           },
                           {
                             name: user.instagram ? (
-                              user.instagram
+                              <Space>
+                                <InstagramOutlined />
+                                {user.instagram}
+                              </Space>
                             ) : (
-                              <Button onClick={showModal} icon={ <InstagramOutlined />} type='link'>
+                              <Button
+                                onClick={showModal}
+                                icon={<InstagramOutlined />}
+                                type='link'
+                              >
                                 Agrega tu instagram
                               </Button>
                             ),
                           },
                           {
                             name: user.telegram ? (
-                              user.telegram
+                              <Space>
+                                <InboxOutlined />
+                                {user.telegram}
+                              </Space>
                             ) : (
-                              <Button onClick={showModal} icon={<EditFilled />} type='link'>
+                              <Button
+                                onClick={showModal}
+                                icon={<EditFilled />}
+                                type='link'
+                              >
                                 Agrega tu telegram
                               </Button>
                             ),
@@ -162,7 +189,7 @@ const Profile: React.FC<ProfileProps> = () => {
               </div>
             </div>
             {/* Sider */}
-            <div className='w-10/12  h-full p-8 overflow-y-auto'>
+            <div className='w-10/12  h-full p-8 overflow-y-auto flex flex-col'>
               <div className='h-1/12 w-full  '>
                 <Typography.Title level={2}>Tus publicaciones</Typography.Title>
               </div>
@@ -185,6 +212,18 @@ const Profile: React.FC<ProfileProps> = () => {
                   );
                 })}
               </Row>
+              {publicationsUser.length === 0 ? (
+                <div className='flex-1 flex justify-center align-center'>
+                  <Empty
+                    description={
+                      <>
+                        No tienes publicaciones, empieza{" "}
+                        <Link to={ROUTES.newPublication}>creando una</Link>
+                      </>
+                    }
+                  />
+                </div>
+              ) : null}
             </div>
           </div>
         </div>
