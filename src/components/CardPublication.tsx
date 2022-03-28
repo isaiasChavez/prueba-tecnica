@@ -43,6 +43,10 @@ export const CardPublication: React.FC<CardPublicationProps> = ({
   return (
     <Card
     hoverable
+    bodyStyle={{
+
+      height:'8rem'
+      }}
       cover={
         <img
         onClick={()=>{
@@ -50,9 +54,10 @@ export const CardPublication: React.FC<CardPublicationProps> = ({
         }}
           alt='example'
           style={{
-            maxHeight:'18rem'
+            maxHeight: "15rem",
+            height: "15rem",
           }}
-          src={IMG.fondo2}
+          src={publication.coverPage}
         />
       }
       actions={[
@@ -66,7 +71,6 @@ export const CardPublication: React.FC<CardPublicationProps> = ({
       ]}
     >
       <Meta
-        //avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
         title={publication.title}
         description={publication.description}
       />

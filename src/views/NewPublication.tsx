@@ -8,6 +8,7 @@ import {
   Breadcrumb,
   Row,
   InputNumber,
+  message,
 } from "antd";
 import { Form, Input, Select, Image } from "antd";
 import { UserOutlined, UploadOutlined } from "@ant-design/icons";
@@ -17,7 +18,8 @@ import EditUserModal from "../components/Profile/EditUserModal";
 import TextArea from "antd/lib/input/TextArea";
 import ProductsContext from "../context/products/products.context";
 import { UploadFile } from "antd/lib/upload/interface";
-import { HTTPResponses, ServerResponse } from "../types/";
+import { HTTPResponses, ServerResponse, URLS } from "../types/";
+import Configuration from "../config";
 import {
   CreateProductDTO,
   UpdateProductDTO,
@@ -25,6 +27,8 @@ import {
 import LoadingScreen from "../components/Utils/LoadingScreen";
 import { IMG } from "../utils/assets";
 import { ROUTES } from "../Router";
+import UserContext from "../context/user/user.context";
+import SesionContext from "../context/sesion/sesion.context";
 
 const { Option } = Select;
 interface NewPublicationProps {}
@@ -50,6 +54,7 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
   const [visible, setVisible] = useState(false);
   const [fileList, setfileList] = useState<UploadFile[]>([]);
   const [loadingData, setloadingData] = useState(true);
+  const { token } = useContext(SesionContext);
   const [fileListPrev, setFileListPrev] = useState<
     { uid: string; url: string }[]
   >([]);
@@ -60,6 +65,7 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
     price: 0,
     status: "",
     description: "",
+    images:""
   });
   useEffect(() => {
     try {
@@ -82,7 +88,6 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
   }, [uuid]);
 
   useEffect(() => {
-    console.log({ loadingData });
     if (isEditing) {
       setfields({
         title: publicationSelected.title,
@@ -90,6 +95,7 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
         price: publicationSelected.price,
         status: publicationSelected.status as any,
         description: publicationSelected.description,
+        images:publicationSelected.images
       });
     }
   }, [publicationSelected]);
@@ -107,11 +113,18 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
   const onFinish = async () => {
     let status: ServerResponse;
     if (isEditing) {
-      console.log("Actualizando");
+
       const dto = new UpdateProductDTO(fields, uuid);
+      
       status = await update(dto);
     } else {
       const dto = new CreateProductDTO(fields);
+      const imagesArray =  fileListPrev.map(file=>{
+        return file.url
+      })
+      const imagesString =  JSON.stringify(imagesArray)
+      console.log({imagesString});
+      dto.images =  imagesString
       status = await create(dto);
     }
 
@@ -136,27 +149,46 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
       setFileListPrev(newFileListPrev);
       setfileList(newFileList);
     },
-    beforeUpload: (file: UploadFile) => {
-      if (fileList.length >= maXImages) {
-        return false;
+
+    name: Configuration.NAME_INPUT_MULTER,
+    action: `${Configuration.baseURL}${URLS.asset.assetOne}`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+
+    onChange(data: { file: UploadFile; fileList: UploadFile[] }) {
+      if (data.file.status !== "uploading") {
       }
-      const reader = new FileReader();
-      reader.readAsDataURL(file as unknown as File);
-      reader.onloadend = result => {
+      if (data.file.status === "done") {
+        message.success(`${data.file.name} file uploaded successfully`);
+        //        avatar:data.file.response.data
+        console.log("OK!",data.file);
         setFileListPrev([
           ...fileListPrev,
           {
-            uid: file.uid,
-            url: result.target.result as string,
+            uid: data.file.originFileObj.uid,
+            url: data.file.response.data,
           },
         ]);
-      };
-      setfileList([...fileList, file]);
-      return false;
+      } else if (data.file.status === "error") {
+        message.error(`${data.file.name} file upload failed.`);
+      }
     },
-    fileList,
     accept: "image/png, image/jpg, image/jpeg",
   };
+
+  const imagePrincipal = fileListPrev[0]
+    ? fileListPrev[0].url
+    : IMG.imagenplaceholder;
+  const imageTwo = fileListPrev[1]
+    ? fileListPrev[1].url
+    : IMG.imagenplaceholder;
+  const imageThree = fileListPrev[2]
+    ? fileListPrev[2].url
+    : IMG.imagenplaceholder;
+  const imageFour = fileListPrev[3]
+    ? fileListPrev[3].url
+    : IMG.imagenplaceholder;
   if (loadingData) {
     return <LoadingScreen />;
   }
@@ -304,7 +336,7 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
                     rules={[
                       {
                         validator: async _ => {
-                          if (fileList.length === 0) {
+                          if (fileListPrev.length === 0) {
                             return Promise.reject(
                               new Error("Debes agregar al menos una imagen")
                             );
@@ -319,7 +351,7 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
                       accept=''
                       {...propsUploader}
                       listType='picture'
-                      maxCount={3}
+                      maxCount={4}
                       multiple
                     >
                       <Button
@@ -366,21 +398,6 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
                   <Image.PreviewGroup>
                     <div className=' flex flex-col px-4'>
                       <Space direction='vertical'>
-                        {/* {fileListPrev[0] && (
-                          <Row
-                            gutter={8}
-                            align="middle"
-                            style={{
-                              height: '25rem',
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              background: `url(${fileListPrev[0].url})`,
-                            }}
-                          >
-                            <Image height="100%" src={fileListPrev[0].url} />
-                          </Row>
-                        )} */}
                         <Row
                           gutter={8}
                           align='middle'
@@ -389,11 +406,12 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            background: `url(${IMG.fondo1})`,
+                            background: `url(${imagePrincipal}})`,
                           }}
                         >
-                          <Image height='100%' src={IMG.imagenplaceholder} />
+                          <Image height='100%' src={imagePrincipal} />
                         </Row>
+
                         <div className='flex   justify-center'>
                           <Row
                             gutter={8}
@@ -405,21 +423,21 @@ const NewPublication: React.FC<NewPublicationProps> = () => {
                               <Image
                                 height='100%'
                                 className='w-4/12 h-full'
-                                src={IMG.imagenplaceholder}
+                                src={imageTwo}
                               />
                             </Col>
                             <Col className='gutter-row' span={8}>
                               <Image
                                 className='flex-1'
                                 height='100%'
-                                src={IMG.imagenplaceholder}
+                                src={imageThree}
                               />
                             </Col>
                             <Col className='gutter-row' span={8}>
                               <Image
                                 height='100%'
                                 className='flex-1'
-                                src={IMG.imagenplaceholder}
+                                src={imageFour}
                               />
                             </Col>
                             {/* <Col className="gutter-row" span={8}>

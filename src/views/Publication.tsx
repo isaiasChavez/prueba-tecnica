@@ -40,7 +40,14 @@ const Publication: React.FC<PublicationProps> = () => {
   if (loading) {
     return <LoadingScreen/>
   }
-  console.log("publicationSelected.user: =><<",publicationSelected.user);
+  let imagesArray = []
+
+  if (publicationSelected.images.length>0) {
+    imagesArray = JSON.parse(publicationSelected.images)
+  }
+
+  console.log({imagesArray})
+  
   return (
     <>
       <EditUserModal visible={visible} setVisible={setVisible} />
@@ -82,10 +89,10 @@ const Publication: React.FC<PublicationProps> = () => {
                               display: 'flex',
                               justifyContent: 'center',
                               alignItems: 'center',
-                              background: `url(${IMG.silla1})`,
+                              background: `url(${imagesArray[0]})`,
                             }}
                           >
-                            <Image height="100%" src={IMG.silla1} />
+                            <Image height="100%" src={imagesArray[0]} />
                           </Row>
                         <div className="flex   justify-center">
                           <Row
@@ -94,27 +101,31 @@ const Publication: React.FC<PublicationProps> = () => {
                               minHeight: '9rem',
                             }}
                           >
-                            <Col className="gutter-row" span={8}>
+                            {imagesArray[1]?<Col className="gutter-row" span={8}>
+                                <Image
+                                  height="100%"
+                                  style={{
+                                    maxHeight:'10rem'
+                                  }}
+                                  className="w-4/12 h-full"
+                                  src={imagesArray[1]?imagesArray[1]:null}
+                                />
+                            </Col>:null}
+                            {imagesArray[2]?<Col className="gutter-row" span={8}>
                                 <Image
                                   height="100%"
                                   className="w-4/12 h-full"
-                                  src={IMG.silla1}
+                                  src={imagesArray[2]?imagesArray[2]:null}
                                 />
-                            </Col>
-                            <Col className="gutter-row" span={8}>
-                                <Image
-                                  className="flex-1"
-                                  height="100%"
-                                  src={IMG.silla2}
-                                />
-                            </Col>
-                            <Col className="gutter-row" span={8}>
+                            </Col>:null}
+                            {imagesArray[3]?<Col className="gutter-row" span={8}>
                                 <Image
                                   height="100%"
-                                  className="flex-1"
-                                  src={IMG.silla3}
+                                  className="w-4/12 h-full"
+                                  src={imagesArray[3]?imagesArray[3]:null}
                                 />
-                            </Col>
+                            </Col>:null}
+                            
                           </Row>
                         </div>
                       </Space>

@@ -42,10 +42,18 @@ export const CardRelated: React.FC<CardRelatedProps> = ({
 
   return (
     <Card
+    bodyStyle={{
+
+      height:'12rem'
+      }}
       cover={
         <img
+        style={{
+          maxHeight: "15rem",
+          height: "15rem",
+        }}
           alt='example'
-          src={IMG.alumno2}
+          src={publication.coverPage}
         />
       }
       onClick={() => {

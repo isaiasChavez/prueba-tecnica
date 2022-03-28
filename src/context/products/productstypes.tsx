@@ -15,6 +15,7 @@ coverPage: string,
 description: string,
 status: StatusProduct,
 price:number,
+images:string,
 isActive: boolean,
 uuid: string,
 title: string
@@ -26,6 +27,7 @@ export class PublicationSelected implements Publication{
 coverPage: string
 description: string
 status: StatusProduct
+images: string;
 price:number
 isActive: boolean
 uuid: string

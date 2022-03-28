@@ -188,7 +188,18 @@ const Register: React.FC<RegisterProps> = () => {
                 wrapperCol={{ span: 24 }}
                 name='password'
                 label='Contraseña'
+
+                
                 rules={[
+                  
+                  {
+                    min: 8,
+                    message: "Se necesita un mínimo de 8 caracteres",
+                  },
+                  {
+                    max: 50,
+                    message: "Máximo 50 caracteres",
+                  },
                   {
                     required: true,
                     message: "¡Por favor ingresa una contraseña!",
@@ -207,6 +218,15 @@ const Register: React.FC<RegisterProps> = () => {
                 dependencies={["password"]}
                 hasFeedback
                 rules={[
+                  {
+                    min: 8,
+                    message: "Se necesita un mínimo de 8 caracteres",
+                  },
+                  {
+                    max: 50,
+                    message: "Máximo 50 caracteres",
+                  },
+                 
                   {
                     required: true,
                     message: "Por favor confirma tu contraseña",

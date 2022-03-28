@@ -347,6 +347,9 @@ body{
 .text-white{
     color:white !important;
 }
+.text-white-mid{
+    color:#ccc !important;
+}
 .text-red{
     color:red !important;
 }

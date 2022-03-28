@@ -10,8 +10,16 @@ import alumno1 from '../images/alumno1.jpg'
 import alumno2 from '../images/alumno2.jpg'
 import alumno3 from '../images/alumnos3.jpg'
 import fondo5 from '../images/fondo5.jpg'
+import persona from '../images/persona.jpg'
+import refri from '../images/refri.jpeg'
+import refri2 from '../images/refri2.jpeg'
+import refri3 from '../images/refri3.jpeg'
 
 export const IMG = {
+    persona,
+    refri2,
+    refri3,
+    refri,
     silla1,
     silla2,
     silla3,

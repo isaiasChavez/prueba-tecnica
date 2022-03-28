@@ -20,24 +20,27 @@ const FooterGeneral: React.FC<FooterGeneralProps> = () => {
                 name: "Política de privacidad",
               },
               {
-                name: "",
+                name: "Ayuda",
               },
             ]}
             renderItem={item => (
               <List.Item style={{
                 border:'none'
               }}>
-                <List.Item.Meta  title={<Link to={ROUTES.about} className="text-white">
+                <List.Item.Meta  title={<Link to={ROUTES.about} className="text-white-mid">
                   {item.name}
                 </Link>} />
               </List.Item>
             )}
           />
         </Col>
-        <Col span={8} className=''>
+        <Col span={16} className='  justify-end relative'>
+          <div className="inset-0 p-4 absolute flex justify-end align-end">
+
           <Typography.Text className='text-white'>
             © Copyright - Isaías Chávez
           </Typography.Text>
+          </div>
         </Col>
       </Row>
     </Footer>

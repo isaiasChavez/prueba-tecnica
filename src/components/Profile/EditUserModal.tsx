@@ -49,7 +49,10 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
   const { token } = useContext(SesionContext);
   
   useEffect(() => {
-    getConfiguration();
+    if (token&&token.length>0) {
+      
+      getConfiguration();
+    }
     console.log({ token });
   }, []);
 

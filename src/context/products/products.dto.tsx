@@ -21,6 +21,9 @@ import { IsNotEmpty, IsString, IsUppercase, IsUUID } from "class-validator";
     @IsNotEmpty()
     @IsString()
     category:string
+
+    @IsNotEmpty()
+    images:string
     
     @IsNotEmpty()
     @IsString()

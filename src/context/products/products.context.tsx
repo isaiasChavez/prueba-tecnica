@@ -26,6 +26,7 @@ export const initialStateProducts =():ProductsStateType=> {
       category:null,
       coverPage:"",
       description:"",
+      images:"",
       isActive:false,
       price:0,
       status:null,

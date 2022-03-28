@@ -13,6 +13,7 @@ import {
 } from "./user.dto";
 import { validateOrReject } from "class-validator";
 import { message } from "antd";
+import config from "../../config";
 
 const UserState = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -36,12 +37,10 @@ const UserState = ({ children }) => {
         message.info(data.msg);
       }
 
-      console.log({ data });
       setLoading(false);
       return data;
     } catch (error) {
       setLoading(false);
-      console.log({ error });
       return {
         status: HTTPResponses.BadRequest,
         msg: errorService.genericHandler("createUser", error),
@@ -59,7 +58,6 @@ const UserState = ({ children }) => {
 
       if (data.status !== HTTPResponses.Ok) {
         message.info(data.msg);
-        console.log({ data });
       } else {
         dispatch({
           type: US_A.UPDATE_SUCCESS,
@@ -69,12 +67,10 @@ const UserState = ({ children }) => {
         });
       }
 
-      console.log({ data });
       setLoading(false);
       return data;
     } catch (error) {
       setLoading(false);
-      console.log({ error });
       return {
         status: HTTPResponses.BadRequest,
         msg: errorService.genericHandler("updateUser", error),
@@ -84,12 +80,10 @@ const UserState = ({ children }) => {
   const updateAvatar =  (info):void => {
 
     if (info.file.status !== "uploading") {
-      console.log(info.file, info.fileList);
 
     }
     if (info.file.status === "done") {
       message.success(`${info.file.name} file uploaded successfully`);
-      console.log({info});
       dispatch({
         type: US_A.UPDATE_AVATAR_SUCCESS,
         payload: {
@@ -110,7 +104,6 @@ const UserState = ({ children }) => {
 
       setLoadingSimple(true);
 
-        console.log(URLS.configuration.configuration);
       const res = await clienteAxios.put(
         `${URLS.configuration.configuration}`,
         dto
@@ -131,7 +124,6 @@ const UserState = ({ children }) => {
       return data;
     } catch (error) {
       setLoadingSimple(false);
-      console.log({ error });
       return {
         status: HTTPResponses.BadRequest,
         msg: errorService.genericHandler("updateConfiguration", error),
@@ -144,11 +136,8 @@ const UserState = ({ children }) => {
 
 
       const res = await clienteAxios.get(`${URLS.configuration.configuration}`); 
-      console.log("getConfiguration",{res});
       const data: ServerResponse = res.data;
-      console.log({data});
       if (data.status === HTTPResponses.Ok) {
-        console.log({ data });
         dispatch({
           type: US_A.GET_CONFIGURATION,
           payload: {
@@ -162,13 +151,43 @@ const UserState = ({ children }) => {
       return data;
     } catch (error) {
       setLoading(false);
-      console.log({ error });
       return {
         status: HTTPResponses.BadRequest,
         msg: errorService.genericHandler("updateUser", error),
       };
     }
   };
+
+
+  const updateFiles = async (files:FileList): Promise<ServerResponse> => {
+    try {
+
+      let formData = new FormData();
+
+
+      const res = await clienteAxios.get(`${URLS.configuration.configuration}`); 
+      const data: ServerResponse = res.data;
+      if (data.status === HTTPResponses.Ok) {
+        dispatch({
+          type: US_A.GET_CONFIGURATION,
+          payload: {
+            configuration: data.data,
+          },
+        });
+      } else {
+        message.info(data.msg);
+      }
+
+      return data;
+    } catch (error) {
+      setLoading(false);
+      return {
+        status: HTTPResponses.BadRequest,
+        msg: errorService.genericHandler("updateUser", error),
+      };
+    }
+  };
+
 
   const getUserProfile = async (simple: boolean): Promise<User> => {
     try {

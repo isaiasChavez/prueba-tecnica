@@ -228,10 +228,10 @@ const Landing: React.FC<LandingProps> = () => {
             <Col span={8} className="p-4">
               <div className='  flex justify-center   h-full flex-col text-center'>
                 <Typography.Title level={4} className="text-uppercase">
-                  Encuentra mejores precios 
+                  Encuentra los que necesitas de segunda mano
                 </Typography.Title>
                 <Typography.Paragraph>
-                  Ya sea porque estás por terminar tus años de estudio o cualquier situación por la que necesites vender tus objetos. 
+                  Seguramente hay alguien que ya tenga lo que necesitas. 
                 </Typography.Paragraph>
               </div>
             </Col>
@@ -260,7 +260,7 @@ const CardProduct = ({ publication }: { publication: Publication }) => {
             height: "15rem",
           }}
           alt='example'
-          src={IMG.silla1}
+          src={publication.coverPage}
         />
       }
       onClick={() => {
@@ -268,7 +268,6 @@ const CardProduct = ({ publication }: { publication: Publication }) => {
       }}
     >
       <Meta
-        avatar={<Avatar src='https://joeschmoe.io/api/v1/random' />}
         title={publication.title}
         description={<span >{publication.description}</span>}
       />

@@ -82,6 +82,7 @@ const configuration= {
 const asset = {
   asset:assetsRoute.join(null),
   profile:assetsRoute.join('profile'),
+  assetOne:assetsRoute.join('asset'),
 }
 
 

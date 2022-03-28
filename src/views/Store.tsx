@@ -44,7 +44,7 @@ const Store: React.FC<StoreProps> = () => {
 
   useEffect(() => {
     getCategories()
-    //getDashboardProducts(ALL)
+    getDashboardProducts(ALL, "");
   }, [])
 
 
@@ -77,7 +77,7 @@ const Store: React.FC<StoreProps> = () => {
           <Button key="2" onClick={() => navigate(ROUTES.login)}>
             Ingresa
           </Button>,
-          <Button key="2" onClick={() => navigate(ROUTES.register)}>
+          <Button key="2" type='primary' onClick={() => navigate(ROUTES.register)}>
             Crea tu cuenta
           </Button>,
         ]
@@ -172,7 +172,7 @@ const CardProduct = ({ publication }: { publication: Publication }) => {
             height: '20rem',
           }}
           alt="example"
-          src={IMG.silla1}
+          src={publication.coverPage}
         />
       }
       onClick={() => {
@@ -180,7 +180,6 @@ const CardProduct = ({ publication }: { publication: Publication }) => {
       }}
     >
       <Meta
-        avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
         title={publication.title}
         description={publication.description}
       />
