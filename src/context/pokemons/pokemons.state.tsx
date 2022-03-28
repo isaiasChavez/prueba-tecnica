@@ -1,9 +1,9 @@
 import { AxiosResponse } from "axios";
 import { useReducer } from "react";
 import clienteAxios from "../../config/axios";
-import PokemonsContext, { Pokemon } from "./pokemons.context";
+import PokemonsContext, { Pokemon, PokemonsStateType } from "./pokemons.context";
         
-import PokemonsReducer, { PokemonsStateType } from "./pokemons.reducer";
+import PokemonsReducer, { ActionsPokemons } from "./pokemons.reducer";
 const PokemonsState = ({ children }) => {
   const [state, dispatch] = useReducer(PokemonsReducer, initialState());
 
@@ -14,15 +14,31 @@ const PokemonsState = ({ children }) => {
     try {
       
       const url =  `pokemon/${name}`
-      const pokemon:AxiosResponse = await clienteAxios.get(url)
-      console.log({pokemon})
+      const response:AxiosResponse = await clienteAxios.get(url)
+      const pokemon:Pokemon =  response.data
+      console.log( pokemon)
       
-      return pokemon.data
+       dispatch({
+        type: ActionsPokemons.GET_ONE_SUCCESS,
+        payload: pokemon,
+      }); 
+      return pokemon
 
     } catch (error) {
+      dispatch({
+        type: ActionsPokemons.GET_ONE_ERROR,
+        payload: null,
+      }); 
       console.log({error})
       return null  
     }
+  }
+
+  const deletePokemonById = (id:number):void=>{
+       dispatch({
+        type: ActionsPokemons.DELETE_ONE,
+        payload: id,
+      }); 
   }
 
  
@@ -32,6 +48,7 @@ const PokemonsState = ({ children }) => {
     <PokemonsContext.Provider
       value={{
         getPokemonByName,
+        deletePokemonById,
         ...state,
       }}
     >
@@ -42,7 +59,8 @@ const PokemonsState = ({ children }) => {
 
 const initialState = () => {
   let state:PokemonsStateType = {
-    pokemons:[]
+    pokemons:[],
+    pokemonsError:null
   };  
   return state;
 };

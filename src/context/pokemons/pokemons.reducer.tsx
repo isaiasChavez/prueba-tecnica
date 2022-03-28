@@ -1,17 +1,16 @@
-import { Pokemon } from "./pokemons.context";
+import { Pokemon, PokemonsStateType } from "./pokemons.context";
 
-export type PokemonsStateType = {
-  pokemons: Pokemon[];
-};
 
-enum ActionsPokemons {
+export enum ActionsPokemons {
   GET_ONE_SUCCESS = "GET_ONE_SUCCESS",
+  GET_ONE_ERROR = "GET_ONE_ERROR",
+  DELETE_ONE = "DELETE_ONE",
 }
 
 type Actions =
   | { type: ActionsPokemons.GET_ONE_SUCCESS; payload: Pokemon }
-  | { type: "ERROR"; payload: any }
-  | { type: "WARNING"; payload: any };
+  | { type: ActionsPokemons.GET_ONE_ERROR; payload: any }
+  | { type: ActionsPokemons.DELETE_ONE; payload: number }
 
 const userReducer = (
   state: PokemonsStateType,
@@ -24,8 +23,18 @@ const userReducer = (
       return {
         ...state,
         pokemons: [...state.pokemons, payload],
+        pokemonsError:null
       };
-
+    case ActionsPokemons.GET_ONE_ERROR:
+        return {
+          ...state,
+          pokemonsError:"We couldn't fetch this pokemon, please try again"
+        };
+    case ActionsPokemons.DELETE_ONE:
+          return {
+            ...state,
+            pokemons:state.pokemons.filter(pokemon => pokemon.id !== payload)
+          };
     default:
       return state;
   }
